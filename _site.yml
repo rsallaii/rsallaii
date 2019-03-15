@@ -1,8 +1,24 @@
-name: "my-website"
+name: "Renan Sallai Iwayama"
+output_dir: "."
 navbar:
-  title: "My Website"
+  title: "Renan Sallai Iwayama"
   left:
-    - text: "Home"
-      href: index.html
-    - text: "About"
-      href: about.html
+    - text: "EDA"
+      href: eda.html
+    - text: "Linear Regression"
+      href: ols.html
+    - text: "Logit Regression"
+      href: glm.html
+    - text: "Topic Modeling"
+      href: tm.html
+  right:
+    - icon: fa-envelope fa-lg
+      href: contact.html
+    - icon: fa-github fa-lg
+      href: http://github.com/rsallaii
+    - icon: fa-linkedin fa-lg
+      href: https://www.linkedin.com/in/rsallaii
+output:
+  html_document:
+    theme: paper
+    css: 'styles.css'
