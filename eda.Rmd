@@ -134,11 +134,11 @@ visualize(
 
 ## 4Cs
 
-Accordingly to BlueNile, the 4 main properties of a diamond are Carat, Cut, Color and Clarity (4Cs):
-- The term carat actually refers to the diamond's total weight and not its size.
-- The most important of the 4Cs is cut because it has the greatest influence on a diamond's sparkle.
-- The second most important of the 4Cs is color, which refers to a diamond's lack of color. The less color, the higher the grade.
-- Clarity is often the least important of the 4Cs because the tiny imperfections are often microscopic.
+Accordingly to [BlueNile](https://www.bluenile.com/education/diamonds?track=NavEdu4c), the 4 main properties of a diamond are Carat, Cut, Color and Clarity (4Cs):
+- The term [carat](https://www.bluenile.com/education/diamonds/carat-weight) actually refers to the diamond's total weight and not its size.
+- The most important of the 4Cs is [cut](https://www.bluenile.com/education/diamonds/cut) because it has the greatest influence on a diamond's sparkle.
+- The second most important of the 4Cs is [color](https://www.bluenile.com/education/diamonds/color), which refers to a diamond's lack of color. The less color, the higher the grade.
+- The least important of the 4Cs is usually [clarity](https://www.bluenile.com/education/diamonds/clarity) because the tiny imperfections are often microscopic.
 
 We can see in all the plots that the diamond properties are not evenly distributed. Specially, the carat plot is also very right skweed.
 
