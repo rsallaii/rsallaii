@@ -5,12 +5,12 @@ navbar:
   left:
     - text: "EDA"
       href: eda.html
-    - text: "Linear Regression"
-      href: ols.html
-    - text: "Logit Regression"
-      href: glm.html
-    - text: "Topic Modeling"
-      href: tm.html
+#    - text: "Linear Regression"
+#      href: ols.html
+#    - text: "Logit Regression"
+#      href: glm.html
+#    - text: "Topic Modeling"
+#      href: tm.html
   right:
     - icon: fa-envelope fa-lg
       href: contact.html
