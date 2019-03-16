@@ -74,16 +74,47 @@ glimpse(df)
 ## Variables
 
 price = price in US dollars ($338-$18,791)
+
 carat = weight of the diamond (0.2-3.00)
+
 clarity = a measurement of how clear the diamond is (I1 (worst), SI2, SI1, VS2, VS1, VVS2, VVS1, IF (best))
+
 cut = quality of the cut (Fair, Good, Very Good, Premium, Ideal)
+
 color = diamond color, from J (worst) to D (best)
+
 depth = total depth percentage = z / mean(x, y) = 2 * z / (x + y) (54.2-70.80)
+
 table = width of top of diamond relative to widest point (50-69)
+
 x = length in mm (3.73-9.42)
+
 y = width in mm (3.71-9.29)
+
 z = depth in mm (2.33-5.58)
+
 date = shipment date
+
+```{r}
+df <- df %>%
+  mutate(year = year(date), month = month(date)) %>%
+  mutate(year=as.factor(year),month=as.factor(month))
+```
+
+First, let's look at the shipment date of the diamonds to understand how many diamonds per month are shipped:
+
+```{r}
+df %>%
+  group_by(year, month) %>%
+  summarize(qty=n()) %>%
+  ggplot(aes(x=month,y=qty,group=year)) + 
+  geom_point(size=3) + 
+  geom_line(size=0.5) + 
+  facet_wrap(~year,nrow=1) + 
+  theme(legend.position="none")
+```
+
+From this plot we can notice that there is not continuos shippment of diamonds and the quantities over the years/months vary a lot from.
 
 Now, to have a better understand about the diamond properties and how they affect price let's do some distribution and scatter plots.
 
@@ -91,7 +122,7 @@ Now, to have a better understand about the diamond properties and how they affec
 
 The distribution plot of the price shows that the price of diamonds is highly skweed to the right and most of them have a price bellow $5,000.
 
-```{r fig.width = 7, fig.height = 7, dpi = 144}
+```{r fig.width = 7, fig.height = 5, dpi = 144}
 visualize(
   df, 
   xvar = "price",
@@ -112,7 +143,7 @@ We can see in all the plots that the diamond properties are not evenly distribut
 
 From the sellers perspective it is key to have the optimal range of diamonds that clients are look forward to buy. There is a clear trade-off in this decision because the inventory cost of a diamond is very expensive, but at the same time you want to offer as many combinations as possible to the consumers. That is one reason that companies like BlueNiles are growing fast with e-commerce.
 
-```{r fig.width = 7, fig.height = 7, dpi = 144}
+```{r fig.width = 7, fig.height = 5, dpi = 144}
 visualize(
   df, 
   xvar = c("carat", "cut", "color", "clarity"), 
@@ -125,7 +156,7 @@ visualize(
 
 Now, let's check how price is related to Carat with a scatter plot:
 
-```{r fig.width = 7, fig.height = 7, dpi = 144}
+```{r fig.width = 7, fig.height = 5, dpi = 144}
 visualize(
   diamonds, 
   xvar = "carat", 
@@ -139,7 +170,7 @@ visualize(
 
 There is a clear positive correlation between price and carat. However, because the price and carat distributions were right skweed we cannot properly capture a linear relationship. Therefore, let's apply the log transformation to both variables and check the scatter plot again:
 
-```{r fig.width = 7, fig.height = 7, dpi = 144}
+```{r fig.width = 7, fig.height = 5, dpi = 144}
 visualize(
   diamonds, 
   xvar = "carat", 
@@ -158,7 +189,7 @@ Yes, it worked! Now the linear relationship is more clear and the log of carat i
 
 Now, let's check how log price is related to Cut with a box-plot:
 
-```{r fig.width = 7, fig.height = 7, dpi = 144}
+```{r fig.width = 7, fig.height = 5, dpi = 144}
 visualize(
   diamonds, 
   xvar = "cut", 
@@ -173,7 +204,7 @@ The box-plot shows that the highest average mean price cames from the worst type
 
 However, it might be the case that Carat/Color/Clarity plays more important roles than cut. Let's check a box-plot with log carat and cut.
 
-```{r fig.width = 7, fig.height = 7, dpi = 144}
+```{r fig.width = 7, fig.height = 5, dpi = 144}
 visualize(
   diamonds, 
   xvar = "cut", 
@@ -188,7 +219,7 @@ Indeed, the Fair cut have the highest mean of log carat. Therefore, diamonds wit
 
 Now, let's perform a Cross-tabs analysis with the categorical variables color:
 
-```{r fig.width = 7, fig.height = 8.62, dpi = 144}
+```{r fig.width = 7, fig.height = 5, dpi = 144}
 result <- cross_tabs(diamonds, var1 = "cut", var2 = "color")
 summary(result, check = c("observed", "expected"))
 plot(result, check = c("observed", "expected"), custom = FALSE)
@@ -198,7 +229,7 @@ Indeed, there is an association with cut and color. We can notice that there are
 
 Finally, let's perform a Cross-tabs analysis with the categorical variables clarity:
 
-```{r fig.width = 7, fig.height = 8.62, dpi = 144}
+```{r fig.width = 7, fig.height = 5, dpi = 144}
 result <- cross_tabs(diamonds, var1 = "cut", var2 = "clarity")
 summary(result, check = c("observed", "expected"))
 plot(result, check = c("observed", "expected"), custom = FALSE)
@@ -210,7 +241,7 @@ However, we still cannot be sure that cut, color and clarity are good predictors
 
 Let's filter for a specific carat range like form 1 to 1.25 to find out if cut, color and clarity are good predictors of log price:
 
-```{r fig.width = 7, fig.height = 7, dpi = 144}
+```{r fig.width = 7, fig.height = 5, dpi = 144}
 visualize(
   diamonds, 
   xvar = c("clarity", "cut", "color"), 
@@ -228,7 +259,7 @@ Indeed, now we can see a positive relationship between these variables and mean 
 
 Now, let's explore the color propertie:
 
-```{r fig.width = 7, fig.height = 7, dpi = 144}
+```{r fig.width = 7, fig.height = 5, dpi = 144}
 visualize(
   diamonds, 
   xvar = "color", 
@@ -245,7 +276,7 @@ Similar to cut, color grade is showing a negative relationship with mean log pri
 
 Now, let's explore the clarity propertie:
 
-```{r fig.width = 7, fig.height = 7, dpi = 144}
+```{r fig.width = 7, fig.height = 5, dpi = 144}
 visualize(
   diamonds, 
   xvar = "clarity", 
@@ -264,7 +295,7 @@ We also have available information about depth, table and diamond dimensions.
 
 It is possible to notice that depth and table have a lower variation and looks more like a normal distribution if compared to carat.
 
-```{r fig.width = 7, fig.height = 10.5, dpi = 144}
+```{r fig.width = 7, fig.height = 5, dpi = 144}
 visualize(
   diamonds, 
   xvar = c("depth", "table", "x", "y", "z"), 
@@ -275,7 +306,7 @@ visualize(
 
 Now, let's check how these properties are related to price:
 
-```{r fig.width = 7, fig.height = 10.5, dpi = 144}
+```{r fig.width = 7, fig.height = 5, dpi = 144}
 visualize(
   diamonds, 
   xvar = c("depth", "table", "x", "y", "z"), 
