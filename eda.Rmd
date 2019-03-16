@@ -326,6 +326,22 @@ visualize(
 )
 ```
 
-It seems that depth and table are not correlated with log price. On the other had, as I was expecting x, y and z have a positive correlation with log price. It makes sense that the diamonds dimensions have influence in the price, specially because we discovered that carat (diamond weight) plays an important role in the diamond price and weight is correalted with volume. However, we need to be cautions with these variables when including them in a predictive model of price because they are going to be very correlated with carat as well.
+It seems that depth and table are not correlated with log price. On the other had, as I was expecting x, y and z have a positive correlation with log price. 
+
+It makes sense that the diamonds dimensions have influence in the price, specially because we discovered that carat (diamond weight) plays an important role in the diamond price and weight is correalted with volume. 
+
+However, we need to be cautions with these variables when including them in a predictive model of price because they are going to be very correlated with carat as well.
+
+```{r fig.width = 9.96, fig.height = 9.96, dpi = 144, out.width = '75%'}
+result <- correlation(
+  df, 
+  vars = c("price", "carat", "depth", "table", "x", "y", "z"), 
+  data_filter = "carat>=1 & carat <= 1.25"
+)
+summary(result)
+plot(result, nrobs = -1)
+```
+
+Indeed, the dimensions of a diamond x, y and z are highly correlated with carat and among each other.
 
 That concludes the exploratory data analysis and now it is possible to proceed to the construction of a predictive model of the log price of a diamond using Linear Regression.
