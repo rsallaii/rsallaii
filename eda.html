@@ -11,17 +11,21 @@
 
 
 
-<title>eda</title>
+<title>Exploratory Data Analysis (EDA)</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/paper.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/spacelab.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<script src="site_libs/navigation-1.1/sourceembed.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="site_libs/pagedtable-1.1/js/pagedtable.js"></script>
 <link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
 <script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
 <script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
@@ -69,6 +73,9 @@ h6 {
 .table th:not([align]) {
   text-align: left;
 }
+#rmd-source-code {
+  display: none;
+}
 </style>
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
@@ -106,34 +113,34 @@ button.code-folding-btn:focus {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 64px;
+  padding-top: 52px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 69px;
-  margin-top: -69px;
+  padding-top: 57px;
+  margin-top: -57px;
 }
 
 .section h2 {
-  padding-top: 69px;
-  margin-top: -69px;
+  padding-top: 57px;
+  margin-top: -57px;
 }
 .section h3 {
-  padding-top: 69px;
-  margin-top: -69px;
+  padding-top: 57px;
+  margin-top: -57px;
 }
 .section h4 {
-  padding-top: 69px;
-  margin-top: -69px;
+  padding-top: 57px;
+  margin-top: -57px;
 }
 .section h5 {
-  padding-top: 69px;
-  margin-top: -69px;
+  padding-top: 57px;
+  margin-top: -57px;
 }
 .section h6 {
-  padding-top: 69px;
-  margin-top: -69px;
+  padding-top: 57px;
+  margin-top: -57px;
 }
 </style>
 
@@ -166,6 +173,15 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("eda.Rmd");
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 
 
@@ -223,33 +239,51 @@ $(document).ready(function () {
 
 <div class="fluid-row" id="header">
 
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
 
 
-<h1 class="title toc-ignore">eda</h1>
+
+<h1 class="title toc-ignore">Exploratory Data Analysis (EDA)</h1>
 
 </div>
 
 
-<div id="r-markdown" class="section level2">
-<h2>R Markdown</h2>
-<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<pre class="r"><code>summary(cars)</code></pre>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
-</div>
-<div id="including-plots" class="section level2">
-<h2>Including Plots</h2>
-<p>You can also embed plots, for example:</p>
-<p><img src="eda_files/figure-html/pressure-1.png" width="672" /></p>
-<p>Note that the <code>echo = FALSE</code> parameter was added to the code chunk to prevent printing of the R code that generated the plot.</p>
+<ul>
+<li>Name: Renan Sallai Iwayama</li>
+<li>GitHub id: “rsallaii”</li>
+</ul>
+<style>
+.table {
+  width: auto;
+}
+ul, ol {
+  padding-left: 18px;
+}
+pre, code, pre code {
+  overflow: auto;
+  white-space: pre;
+  word-wrap: normal;
+  background-color: #ffffff;
+}
+</style>
+<pre class="r"><code>## loading the data.
+df &lt;- radiant.data::diamonds</code></pre>
+<pre class="r"><code>head(df)</code></pre>
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["price"],"name":[1],"type":["int"],"align":["right"]},{"label":["carat"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["clarity"],"name":[3],"type":["fctr"],"align":["left"]},{"label":["cut"],"name":[4],"type":["fctr"],"align":["left"]},{"label":["color"],"name":[5],"type":["fctr"],"align":["left"]},{"label":["depth"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["table"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["x"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["y"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["z"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["date"],"name":[11],"type":["date"],"align":["right"]}],"data":[{"1":"580","2":"0.32","3":"VS1","4":"Ideal","5":"H","6":"61.0","7":"56.0","8":"4.43","9":"4.45","10":"2.71","11":"2012-02-26"},{"1":"650","2":"0.34","3":"SI1","4":"Very Good","5":"G","6":"63.4","7":"57.0","8":"4.45","9":"4.42","10":"2.81","11":"2012-02-26"},{"1":"630","2":"0.30","3":"VS2","4":"Very Good","5":"G","6":"63.1","7":"58.0","8":"4.27","9":"4.23","10":"2.68","11":"2012-02-26"},{"1":"706","2":"0.35","3":"VVS2","4":"Ideal","5":"H","6":"59.2","7":"56.0","8":"4.60","9":"4.65","10":"2.74","11":"2012-02-26"},{"1":"1080","2":"0.40","3":"VS2","4":"Premium","5":"F","6":"62.6","7":"58.0","8":"4.72","9":"4.68","10":"2.94","11":"2012-02-26"},{"1":"3082","2":"0.60","3":"VVS1","4":"Ideal","5":"E","6":"62.5","7":"53.7","8":"5.35","9":"5.43","10":"3.38","11":"2012-02-26"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
 </div>
 
+<div id="rmd-source-code">LS0tDQp0aXRsZTogRXhwbG9yYXRvcnkgRGF0YSBBbmFseXNpcyAoRURBKQ0Kb3V0cHV0Og0KICBodG1sX2RvY3VtZW50Og0KICAgIGhpZ2hsaWdodDogdGV4dG1hdGUNCiAgICB0aGVtZTogc3BhY2VsYWINCiAgICBkZl9wcmludDogcGFnZWQNCiAgICB0b2M6IHllcw0KICAgIGNvZGVfZm9sZGluZzogaGlkZQ0KICAgIGNvZGVfZG93bmxvYWQ6IHRydWUNCi0tLQ0KDQoqIE5hbWU6IFJlbmFuIFNhbGxhaSBJd2F5YW1hDQoqIEdpdEh1YiBpZDogInJzYWxsYWlpIg0KDQpgYGB7ciByX3NldHVwLCBpbmNsdWRlID0gRkFMU0V9DQojIyBpbml0aWFsIHNldHRpbmdzDQprbml0cjo6b3B0c19jaHVuayRzZXQoDQogIGNvbW1lbnQgPSBOQSwNCiAgZWNobyA9IFRSVUUsDQogIGVycm9yID0gVFJVRSwNCiAgY2FjaGUgPSBGQUxTRSwNCiAgbWVzc2FnZSA9IEZBTFNFLA0KICBkcGkgPSA5NiwNCiAgd2FybmluZyA9IEZBTFNFDQopDQoNCiMjIHdpZHRoIHRvIHVzZSB3aGVuIHByaW50aW5nIHRhYmxlcyBldGMuDQpvcHRpb25zKA0KICB3aWR0aCA9IDI1MCwNCiAgc2NpcGVuID0gMTAwLA0KICBtYXgucHJpbnQgPSA1MDAwLA0KICBzdHJpbmdzQXNGYWN0b3JzID0gRkFMU0UNCikNCg0KIyMgbG9hZCByYWRpYW50IHBhY2thZ2VzIGlmIG5lZWRlZA0KaWYgKCFleGlzdHMoInJfZW52aXJvbm1lbnQiKSkgbGlicmFyeShyYWRpYW50KQ0KYGBgDQoNCjxzdHlsZT4NCi50YWJsZSB7DQogIHdpZHRoOiBhdXRvOw0KfQ0KdWwsIG9sIHsNCiAgcGFkZGluZy1sZWZ0OiAxOHB4Ow0KfQ0KcHJlLCBjb2RlLCBwcmUgY29kZSB7DQogIG92ZXJmbG93OiBhdXRvOw0KICB3aGl0ZS1zcGFjZTogcHJlOw0KICB3b3JkLXdyYXA6IG5vcm1hbDsNCiAgYmFja2dyb3VuZC1jb2xvcjogI2ZmZmZmZjsNCn0NCjwvc3R5bGU+DQoNCmBgYHtyfQ0KIyMgbG9hZGluZyB0aGUgZGF0YS4NCmRmIDwtIHJhZGlhbnQuZGF0YTo6ZGlhbW9uZHMNCmBgYA0KDQpgYGB7cn0NCmhlYWQoZGYpDQpgYGANCg0K</div>
 
 
 
