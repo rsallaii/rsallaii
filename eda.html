@@ -11,7 +11,7 @@
 
 
 
-<title>Exploratory Data Analysis (EDA)</title>
+<title>Diamonds Exploratory Data Analysis</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -251,10 +251,25 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Exploratory Data Analysis (EDA)</h1>
+<h1 class="title toc-ignore">Diamonds Exploratory Data Analysis</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#exploratory-data-analysis">Exploratory Data Analysis</a><ul>
+<li><a href="#variables">Variables</a></li>
+<li><a href="#price">Price</a></li>
+<li><a href="#cs">4Cs</a><ul>
+<li><a href="#carat">Carat</a></li>
+<li><a href="#cut">Cut</a></li>
+<li><a href="#color">Color</a></li>
+<li><a href="#clarity">Clarity</a></li>
+</ul></li>
+<li><a href="#others">Others</a></li>
+</ul></li>
+</ul>
+</div>
 
 <ul>
 <li>Name: Renan Sallai Iwayama</li>
@@ -274,16 +289,246 @@ pre, code, pre code {
   background-color: #ffffff;
 }
 </style>
+<div id="exploratory-data-analysis" class="section level1">
+<h1>Exploratory Data Analysis</h1>
+<p>Let’s do an Exploratory Data Analysis using Diamond dataset available in the radiant package.</p>
+<p>Diamond dataset contain the prices and other attributes of a sample of 3000 diamonds. The following analysis can be very helpful to understand which diamond properties drive diamond price.</p>
+<p>obs. Unfortunately, this dataset does not contain information about the shape of the diamond that plays an important role in its price.</p>
 <pre class="r"><code>## loading the data.
 df &lt;- radiant.data::diamonds</code></pre>
-<pre class="r"><code>head(df)</code></pre>
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["price"],"name":[1],"type":["int"],"align":["right"]},{"label":["carat"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["clarity"],"name":[3],"type":["fctr"],"align":["left"]},{"label":["cut"],"name":[4],"type":["fctr"],"align":["left"]},{"label":["color"],"name":[5],"type":["fctr"],"align":["left"]},{"label":["depth"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["table"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["x"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["y"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["z"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["date"],"name":[11],"type":["date"],"align":["right"]}],"data":[{"1":"580","2":"0.32","3":"VS1","4":"Ideal","5":"H","6":"61.0","7":"56.0","8":"4.43","9":"4.45","10":"2.71","11":"2012-02-26"},{"1":"650","2":"0.34","3":"SI1","4":"Very Good","5":"G","6":"63.4","7":"57.0","8":"4.45","9":"4.42","10":"2.81","11":"2012-02-26"},{"1":"630","2":"0.30","3":"VS2","4":"Very Good","5":"G","6":"63.1","7":"58.0","8":"4.27","9":"4.23","10":"2.68","11":"2012-02-26"},{"1":"706","2":"0.35","3":"VVS2","4":"Ideal","5":"H","6":"59.2","7":"56.0","8":"4.60","9":"4.65","10":"2.74","11":"2012-02-26"},{"1":"1080","2":"0.40","3":"VS2","4":"Premium","5":"F","6":"62.6","7":"58.0","8":"4.72","9":"4.68","10":"2.94","11":"2012-02-26"},{"1":"3082","2":"0.60","3":"VVS1","4":"Ideal","5":"E","6":"62.5","7":"53.7","8":"5.35","9":"5.43","10":"3.38","11":"2012-02-26"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
+<p>To start let’s explore the data structure and variable types using the function glimpse from dplyr:</p>
+<pre class="r"><code>glimpse(df)</code></pre>
+<pre><code>Observations: 3,000
+Variables: 11
+$ price   &lt;int&gt; 580, 650, 630, 706, 1080, 3082, 3328, 4229, 1895, 3546, 752, 13003, 814, 6115, 645, 3749, 2926, 765, 1140, 1158, 521, 6122, 5096, 9465, 3225, 743, 1273, 3830, 16386, 1866, 709, 8167, 658, 4502, 1970, 596, 15938, 18080, 802, 545, ...
+$ carat   &lt;dbl&gt; 0.32, 0.34, 0.30, 0.35, 0.40, 0.60, 0.88, 0.93, 0.51, 1.01, 0.30, 2.01, 0.30, 1.00, 0.32, 1.01, 0.81, 0.40, 0.31, 0.40, 0.31, 1.04, 1.21, 1.04, 0.68, 0.33, 0.55, 1.14, 2.02, 0.59, 0.30, 1.22, 0.30, 0.90, 0.61, 0.34, 2.06, 2.32, 0...
+$ clarity &lt;fct&gt; VS1, SI1, VS2, VVS2, VS2, VVS1, SI1, SI1, VVS2, SI2, VVS2, VS2, VVS2, VS2, VS1, SI2, SI2, SI1, VVS1, VVS2, SI1, VS2, VS2, VVS2, VVS1, SI1, SI2, SI2, SI1, IF, SI1, VS1, VS2, SI1, VVS2, VS2, SI2, SI1, VS2, VS1, SI1, VS2, SI1, VS2, ...
+$ cut     &lt;fct&gt; Ideal, Very Good, Very Good, Ideal, Premium, Ideal, Ideal, Premium, Very Good, Good, Good, Premium, Ideal, Very Good, Premium, Premium, Good, Ideal, Ideal, Ideal, Good, Premium, Premium, Ideal, Good, Premium, Ideal, Premium, Fair...
+$ color   &lt;fct&gt; H, G, G, H, F, E, I, E, G, E, D, I, D, D, G, I, D, I, F, E, H, G, J, G, G, E, E, H, D, I, D, H, E, E, H, G, G, H, F, H, F, I, H, E, F, G, I, D, E, H, F, G, F, F, D, G, G, F, G, I, G, H, F, F, G, E, E, E, G, I, E, J, H, G, D, F, D...
+$ depth   &lt;dbl&gt; 61.0, 63.4, 63.1, 59.2, 62.6, 62.5, 61.7, 61.4, 63.4, 63.9, 63.6, 59.5, 62.4, 63.4, 61.4, 61.7, 63.6, 61.6, 60.6, 61.7, 64.0, 60.0, 61.9, 61.7, 61.9, 60.2, 62.0, 62.2, 65.0, 61.2, 62.2, 62.6, 61.8, 62.3, 60.5, 61.8, 59.0, 62.6, 6...
+$ table   &lt;dbl&gt; 56.0, 57.0, 58.0, 56.0, 58.0, 53.7, 56.0, 57.0, 57.0, 58.0, 55.0, 60.0, 54.0, 57.0, 58.0, 60.0, 55.0, 56.0, 56.0, 55.0, 54.0, 58.0, 59.0, 56.0, 55.0, 58.0, 56.0, 61.0, 55.0, 58.0, 56.0, 56.0, 58.0, 56.0, 57.0, 56.0, 58.0, 57.0, 5...
+$ x       &lt;dbl&gt; 4.43, 4.45, 4.27, 4.60, 4.72, 5.35, 6.14, 6.34, 5.09, 6.31, 4.25, 8.26, 4.30, 6.36, 4.36, 6.34, 5.91, 4.74, 4.44, 4.74, 4.31, 6.62, 6.84, 6.50, 5.63, 4.55, 5.27, 6.72, 7.94, 5.38, 4.30, 6.83, 4.26, 6.21, 5.52, 4.48, 8.30, 8.46, 4...
+$ y       &lt;dbl&gt; 4.45, 4.42, 4.23, 4.65, 4.68, 5.43, 6.18, 6.23, 5.06, 6.37, 4.31, 8.21, 4.32, 6.32, 4.40, 6.40, 5.86, 4.68, 4.41, 4.76, 4.29, 6.54, 6.77, 6.54, 5.68, 4.49, 5.22, 6.64, 7.84, 5.41, 4.25, 6.87, 4.28, 6.14, 5.54, 4.52, 8.38, 8.52, 4...
+$ z       &lt;dbl&gt; 2.71, 2.81, 2.68, 2.74, 2.94, 3.38, 3.80, 3.86, 3.22, 4.05, 2.72, 4.90, 2.69, 4.02, 2.69, 3.93, 3.74, 2.90, 2.68, 2.93, 2.75, 3.95, 4.21, 4.02, 3.50, 2.72, 3.25, 4.16, 5.13, 3.30, 2.66, 4.29, 2.64, 3.85, 3.35, 2.78, 4.92, 5.32, 2...
+$ date    &lt;date&gt; 2012-02-26, 2012-02-26, 2012-02-26, 2012-02-26, 2012-02-26, 2012-02-26, 2012-02-26, 2012-02-26, 2012-02-26, 2012-02-26, 2012-02-26, 2012-02-26, 2012-02-26, 2012-02-26, 2012-02-26, 2012-02-26, 2012-02-26, 2012-02-26, 2012-02-26, ...</code></pre>
+<div id="variables" class="section level2">
+<h2>Variables</h2>
+<p>price = price in US dollars ($338-$18,791) carat = weight of the diamond (0.2-3.00) clarity = a measurement of how clear the diamond is (I1 (worst), SI2, SI1, VS2, VS1, VVS2, VVS1, IF (best)) cut = quality of the cut (Fair, Good, Very Good, Premium, Ideal) color = diamond color, from J (worst) to D (best) depth = total depth percentage = z / mean(x, y) = 2 * z / (x + y) (54.2-70.80) table = width of top of diamond relative to widest point (50-69) x = length in mm (3.73-9.42) y = width in mm (3.71-9.29) z = depth in mm (2.33-5.58) date = shipment date</p>
+<p>Now, to have a better understand about the diamond properties and how they affect price let’s do some distribution and scatter plots.</p>
+</div>
+<div id="price" class="section level2">
+<h2>Price</h2>
+<p>The distribution plot of the price shows that the price of diamonds is highly skweed to the right and most of them have a price bellow $5,000.</p>
+<pre class="r"><code>visualize(
+  df, 
+  xvar = &quot;price&quot;,
+  type = &quot;dist&quot;, 
+  custom = FALSE
+)</code></pre>
+<p><img src="eda_files/figure-html/unnamed-chunk-3-1.png" width="1008" /></p>
+</div>
+<div id="cs" class="section level2">
+<h2>4Cs</h2>
+<p>Accordingly to BlueNile, the 4 main properties of a diamond are Carat, Cut, Color and Clarity (4Cs): - The term carat actually refers to the diamond’s total weight and not its size. - The most important of the 4Cs is cut because it has the greatest influence on a diamond’s sparkle. - The second most important of the 4Cs is color, which refers to a diamond’s lack of color. The less color, the higher the grade. - Clarity is often the least important of the 4Cs because the tiny imperfections are often microscopic.</p>
+<p>We can see in all the plots that the diamond properties are not evenly distributed. Specially, the carat plot is also very right skweed.</p>
+<p>From the sellers perspective it is key to have the optimal range of diamonds that clients are look forward to buy. There is a clear trade-off in this decision because the inventory cost of a diamond is very expensive, but at the same time you want to offer as many combinations as possible to the consumers. That is one reason that companies like BlueNiles are growing fast with e-commerce.</p>
+<pre class="r"><code>visualize(
+  df, 
+  xvar = c(&quot;carat&quot;, &quot;cut&quot;, &quot;color&quot;, &quot;clarity&quot;), 
+  type = &quot;dist&quot;, 
+  custom = FALSE
+)</code></pre>
+<p><img src="eda_files/figure-html/unnamed-chunk-4-1.png" width="1008" /></p>
+<div id="carat" class="section level3">
+<h3>Carat</h3>
+<p>Now, let’s check how price is related to Carat with a scatter plot:</p>
+<pre class="r"><code>visualize(
+  diamonds, 
+  xvar = &quot;carat&quot;, 
+  yvar = &quot;price&quot;, 
+  type = &quot;scatter&quot;, 
+  nrobs = 1000, 
+  check = &quot;line&quot;, 
+  custom = FALSE
+)</code></pre>
+<p><img src="eda_files/figure-html/unnamed-chunk-5-1.png" width="1008" /></p>
+<p>There is a clear positive correlation between price and carat. However, because the price and carat distributions were right skweed we cannot properly capture a linear relationship. Therefore, let’s apply the log transformation to both variables and check the scatter plot again:</p>
+<pre class="r"><code>visualize(
+  diamonds, 
+  xvar = &quot;carat&quot;, 
+  yvar = &quot;price&quot;, 
+  type = &quot;scatter&quot;, 
+  nrobs = 1000, 
+  check = &quot;line&quot;, 
+  axes = c(&quot;log_x&quot;, &quot;log_y&quot;), 
+  custom = FALSE
+)</code></pre>
+<p><img src="eda_files/figure-html/unnamed-chunk-6-1.png" width="1008" /></p>
+<p>Yes, it worked! Now the linear relationship is more clear and the log of carat is going to be a strong predictor of the log of a diamond price.</p>
+</div>
+<div id="cut" class="section level3">
+<h3>Cut</h3>
+<p>Now, let’s check how log price is related to Cut with a box-plot:</p>
+<pre class="r"><code>visualize(
+  diamonds, 
+  xvar = &quot;cut&quot;, 
+  yvar = &quot;price&quot;, 
+  type = &quot;box&quot;, 
+  axes = &quot;log_y&quot;, 
+  custom = FALSE
+)</code></pre>
+<p><img src="eda_files/figure-html/unnamed-chunk-7-1.png" width="1008" /></p>
+<p>The box-plot shows that the highest average mean price cames from the worst type of cut. That finding is oposite to my previous expectation. Accordingly to BlueNiles, cut was supposed to be the most important C since it affects the diamond sparkling.</p>
+<p>However, it might be the case that Carat/Color/Clarity plays more important roles than cut. Let’s check a box-plot with log carat and cut.</p>
+<pre class="r"><code>visualize(
+  diamonds, 
+  xvar = &quot;cut&quot;, 
+  yvar = &quot;carat&quot;, 
+  type = &quot;box&quot;, 
+  axes = &quot;log_y&quot;, 
+  custom = FALSE
+)</code></pre>
+<p><img src="eda_files/figure-html/unnamed-chunk-8-1.png" width="1008" /></p>
+<p>Indeed, the Fair cut have the highest mean of log carat. Therefore, diamonds with a lower cut in this dataset might have a higher price not because of the cut, but because of the higher carat size.</p>
+<p>Now, let’s perform a Cross-tabs analysis with the categorical variables color:</p>
+<pre class="r"><code>result &lt;- cross_tabs(diamonds, var1 = &quot;cut&quot;, var2 = &quot;color&quot;)
+summary(result, check = c(&quot;observed&quot;, &quot;expected&quot;))</code></pre>
+<pre><code>Cross-tabs
+Data     : diamonds 
+Variables: cut, color 
+Null hyp.: there is no association between cut and color 
+Alt. hyp.: there is an association between cut and color 
+
+Observed:
+          D     E     F     G     H     I     J     Total
+Fair         15    14    17    16    21    11     7   101
+Good         35    62    55    40    37    26    20   275
+Very Good    77   140   136   131    95    59    39   677
+Premium      92   144   119   156   132    83    45   771
+Ideal       163   194   238   254   169   105    53 1,176
+Total       382   554   565   597   454   284   164 3,000
+
+Expected: (row total x column total) / total
+          D        E        F        G        H        I        J        Total   
+Fair         12.86    18.65    19.02    20.10    15.28     9.56     5.52   101.00
+Good         35.02    50.78    51.79    54.73    41.62    26.03    15.03   275.00
+Very Good    86.20   125.02   127.50   134.72   102.45    64.09    37.01   677.00
+Premium      98.17   142.38   145.21   153.43   116.68    72.99    42.15   771.00
+Ideal       149.74   217.17   221.48   234.02   177.97   111.33    64.29 1,176.00
+Total       382.00   554.00   565.00   597.00   454.00   284.00   164.00 3,000.00
+
+Chi-squared: 36.742 df(24), p.value 0.046 
+
+0.0 % of cells have expected values below 5</code></pre>
+<pre class="r"><code>plot(result, check = c(&quot;observed&quot;, &quot;expected&quot;), custom = FALSE)</code></pre>
+<p><img src="eda_files/figure-html/unnamed-chunk-9-1.png" width="1008" /></p>
+<p>Indeed, there is an association with cut and color. We can notice that there are less diamonds with a higher cut and higher color grade than expected (Color grade D is better than color grade J).</p>
+<p>Finally, let’s perform a Cross-tabs analysis with the categorical variables clarity:</p>
+<pre class="r"><code>result &lt;- cross_tabs(diamonds, var1 = &quot;cut&quot;, var2 = &quot;clarity&quot;)
+summary(result, check = c(&quot;observed&quot;, &quot;expected&quot;))</code></pre>
+<pre><code>Cross-tabs
+Data     : diamonds 
+Variables: cut, clarity 
+Null hyp.: there is no association between cut and clarity 
+Alt. hyp.: there is an association between cut and clarity 
+
+Observed:
+          I1    SI2   SI1   VS2   VS1   VVS2  VVS1  IF    Total
+Fair         12    28    29    14    13     2     2     1   101
+Good          4    62    93    52    33    12    15     4   275
+Very Good     6   132   171   131    99    83    40    15   677
+Premium      13   157   196   185   120    43    39    18   771
+Ideal         5   150   232   279   177   144   128    61 1,176
+Total        40   529   721   661   442   284   224    99 3,000
+
+Expected: (row total x column total) / total
+          I1       SI2      SI1      VS2      VS1      VVS2     VVS1     IF       Total   
+Fair          1.35    17.81    24.27    22.25    14.88     9.56     7.54     3.33   101.00
+Good          3.67    48.49    66.09    60.59    40.52    26.03    20.53     9.07   275.00
+Very Good     9.03   119.38   162.71   149.17    99.74    64.09    50.55    22.34   677.00
+Premium      10.28   135.95   185.30   169.88   113.59    72.99    57.57    25.44   771.00
+Ideal        15.68   207.37   282.63   259.11   173.26   111.33    87.81    38.81 1,176.00
+Total        40.00   529.00   721.00   661.00   442.00   284.00   224.00    99.00 3,000.00
+
+Chi-squared: 251.740 df(*28*), p.value &lt; .001 
+
+7.5 % of cells have expected values below 5
+p.value for chi-squared statistics obtained using simulation (2,000 replicates)</code></pre>
+<pre class="r"><code>plot(result, check = c(&quot;observed&quot;, &quot;expected&quot;), custom = FALSE)</code></pre>
+<p><img src="eda_files/figure-html/unnamed-chunk-10-1.png" width="1008" /></p>
+<p>Indeed, there is an association with cut and clarity. We can notice that there are less diamonds with a higher cut and higher clarity grade than expected (Clarity IF is better than I1).</p>
+<p>However, we still cannot be sure that cut, color and clarity are good predictors of log price like carat.</p>
+<p>Let’s filter for a specific carat range like form 1 to 1.25 to find out if cut, color and clarity are good predictors of log price:</p>
+<pre class="r"><code>visualize(
+  diamonds, 
+  xvar = c(&quot;clarity&quot;, &quot;cut&quot;, &quot;color&quot;), 
+  yvar = &quot;price&quot;, 
+  type = &quot;bar&quot;, 
+  axes = &quot;log_y&quot;, 
+  data_filter = &quot;carat&gt;=1 &amp; carat &lt;= 1.25&quot;, 
+  custom = FALSE
+)</code></pre>
+<p><img src="eda_files/figure-html/unnamed-chunk-11-1.png" width="1008" /></p>
+<p>Indeed, now we can see a positive relationship between these variables and mean log price. However, it seems that clarity is the most important of the Cs and not cut as pointed out by BlueNiles.</p>
+</div>
+<div id="color" class="section level3">
+<h3>Color</h3>
+<p>Now, let’s explore the color propertie:</p>
+<pre class="r"><code>visualize(
+  diamonds, 
+  xvar = &quot;color&quot;, 
+  yvar = &quot;price&quot;, 
+  type = &quot;bar&quot;, 
+  axes = &quot;log_y&quot;, 
+  custom = FALSE
+)</code></pre>
+<p><img src="eda_files/figure-html/unnamed-chunk-12-1.png" width="1008" /></p>
+<p>Similar to cut, color grade is showing a negative relationship with mean log price.</p>
+</div>
+<div id="clarity" class="section level3">
+<h3>Clarity</h3>
+<p>Now, let’s explore the clarity propertie:</p>
+<pre class="r"><code>visualize(
+  diamonds, 
+  xvar = &quot;clarity&quot;, 
+  yvar = &quot;price&quot;, 
+  type = &quot;bar&quot;, 
+  axes = &quot;log_y&quot;, 
+  custom = FALSE
+)</code></pre>
+<p><img src="eda_files/figure-html/unnamed-chunk-13-1.png" width="1008" /></p>
+<p>Similar to cut and color, clarity grade is showing a negative relationship with mean log price.</p>
+</div>
+</div>
+<div id="others" class="section level2">
+<h2>Others</h2>
+<p>We also have available information about depth, table and diamond dimensions.</p>
+<p>It is possible to notice that depth and table have a lower variation and looks more like a normal distribution if compared to carat.</p>
+<pre class="r"><code>visualize(
+  diamonds, 
+  xvar = c(&quot;depth&quot;, &quot;table&quot;, &quot;x&quot;, &quot;y&quot;, &quot;z&quot;), 
+  type = &quot;dist&quot;, 
+  custom = FALSE
+)</code></pre>
+<p><img src="eda_files/figure-html/unnamed-chunk-14-1.png" width="1008" /></p>
+<p>Now, let’s check how these properties are related to price:</p>
+<pre class="r"><code>visualize(
+  diamonds, 
+  xvar = c(&quot;depth&quot;, &quot;table&quot;, &quot;x&quot;, &quot;y&quot;, &quot;z&quot;), 
+  yvar = &quot;price&quot;, 
+  type = &quot;scatter&quot;, 
+  nrobs = 1000, 
+  check = &quot;line&quot;, 
+  axes = &quot;log_y&quot;, 
+  custom = FALSE
+)</code></pre>
+<p><img src="eda_files/figure-html/unnamed-chunk-15-1.png" width="1008" /></p>
+<p>It seems that depth and table are not correlated with log price. On the other had, as I was expecting x, y and z have a positive correlation with log price. It makes sense that the diamonds dimensions have influence in the price, specially because we discovered that carat (diamond weight) plays an important role in the diamond price. However, we need to be cautions with these variables when including them in a predictive model of price because they are going to be very correlated with carat as well.</p>
+<p>That concludes the exploratory data analysis and now it is possible to proceed to the construction of a predictive model of log price using Linear Regression.</p>
+</div>
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogRXhwbG9yYXRvcnkgRGF0YSBBbmFseXNpcyAoRURBKQ0Kb3V0cHV0Og0KICBodG1sX2RvY3VtZW50Og0KICAgIGhpZ2hsaWdodDogdGV4dG1hdGUNCiAgICB0aGVtZTogc3BhY2VsYWINCiAgICBkZl9wcmludDogcGFnZWQNCiAgICB0b2M6IHllcw0KICAgIGNvZGVfZm9sZGluZzogaGlkZQ0KICAgIGNvZGVfZG93bmxvYWQ6IHRydWUNCi0tLQ0KDQoqIE5hbWU6IFJlbmFuIFNhbGxhaSBJd2F5YW1hDQoqIEdpdEh1YiBpZDogInJzYWxsYWlpIg0KDQpgYGB7ciByX3NldHVwLCBpbmNsdWRlID0gRkFMU0V9DQojIyBpbml0aWFsIHNldHRpbmdzDQprbml0cjo6b3B0c19jaHVuayRzZXQoDQogIGNvbW1lbnQgPSBOQSwNCiAgZWNobyA9IFRSVUUsDQogIGVycm9yID0gVFJVRSwNCiAgY2FjaGUgPSBGQUxTRSwNCiAgbWVzc2FnZSA9IEZBTFNFLA0KICBkcGkgPSA5NiwNCiAgd2FybmluZyA9IEZBTFNFDQopDQoNCiMjIHdpZHRoIHRvIHVzZSB3aGVuIHByaW50aW5nIHRhYmxlcyBldGMuDQpvcHRpb25zKA0KICB3aWR0aCA9IDI1MCwNCiAgc2NpcGVuID0gMTAwLA0KICBtYXgucHJpbnQgPSA1MDAwLA0KICBzdHJpbmdzQXNGYWN0b3JzID0gRkFMU0UNCikNCg0KIyMgbG9hZCByYWRpYW50IHBhY2thZ2VzIGlmIG5lZWRlZA0KaWYgKCFleGlzdHMoInJfZW52aXJvbm1lbnQiKSkgbGlicmFyeShyYWRpYW50KQ0KYGBgDQoNCjxzdHlsZT4NCi50YWJsZSB7DQogIHdpZHRoOiBhdXRvOw0KfQ0KdWwsIG9sIHsNCiAgcGFkZGluZy1sZWZ0OiAxOHB4Ow0KfQ0KcHJlLCBjb2RlLCBwcmUgY29kZSB7DQogIG92ZXJmbG93OiBhdXRvOw0KICB3aGl0ZS1zcGFjZTogcHJlOw0KICB3b3JkLXdyYXA6IG5vcm1hbDsNCiAgYmFja2dyb3VuZC1jb2xvcjogI2ZmZmZmZjsNCn0NCjwvc3R5bGU+DQoNCmBgYHtyfQ0KIyMgbG9hZGluZyB0aGUgZGF0YS4NCmRmIDwtIHJhZGlhbnQuZGF0YTo6ZGlhbW9uZHMNCmBgYA0KDQpgYGB7cn0NCmhlYWQoZGYpDQpgYGANCg0K</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogRGlhbW9uZHMgRXhwbG9yYXRvcnkgRGF0YSBBbmFseXNpcw0Kb3V0cHV0Og0KICBodG1sX2RvY3VtZW50Og0KICAgIGhpZ2hsaWdodDogdGV4dG1hdGUNCiAgICB0aGVtZTogc3BhY2VsYWINCiAgICBkZl9wcmludDogcGFnZWQNCiAgICB0b2M6IHllcw0KICAgIGNvZGVfZm9sZGluZzogaGlkZQ0KICAgIGNvZGVfZG93bmxvYWQ6IHRydWUNCi0tLQ0KDQoqIE5hbWU6IFJlbmFuIFNhbGxhaSBJd2F5YW1hDQoqIEdpdEh1YiBpZDogInJzYWxsYWlpIg0KDQpgYGB7ciByX3NldHVwLCBpbmNsdWRlID0gRkFMU0V9DQojIyBpbml0aWFsIHNldHRpbmdzDQprbml0cjo6b3B0c19jaHVuayRzZXQoDQogIGNvbW1lbnQgPSBOQSwNCiAgZWNobyA9IFRSVUUsDQogIGVycm9yID0gVFJVRSwNCiAgY2FjaGUgPSBGQUxTRSwNCiAgbWVzc2FnZSA9IEZBTFNFLA0KICBkcGkgPSA5NiwNCiAgd2FybmluZyA9IEZBTFNFDQopDQoNCiMjIHdpZHRoIHRvIHVzZSB3aGVuIHByaW50aW5nIHRhYmxlcyBldGMuDQpvcHRpb25zKA0KICB3aWR0aCA9IDI1MCwNCiAgc2NpcGVuID0gMTAwLA0KICBtYXgucHJpbnQgPSA1MDAwLA0KICBzdHJpbmdzQXNGYWN0b3JzID0gRkFMU0UNCikNCg0KIyMgbG9hZCByYWRpYW50IHBhY2thZ2VzIGlmIG5lZWRlZA0KaWYgKCFleGlzdHMoInJfZW52aXJvbm1lbnQiKSkgbGlicmFyeShyYWRpYW50KQ0KYGBgDQoNCjxzdHlsZT4NCi50YWJsZSB7DQogIHdpZHRoOiBhdXRvOw0KfQ0KdWwsIG9sIHsNCiAgcGFkZGluZy1sZWZ0OiAxOHB4Ow0KfQ0KcHJlLCBjb2RlLCBwcmUgY29kZSB7DQogIG92ZXJmbG93OiBhdXRvOw0KICB3aGl0ZS1zcGFjZTogcHJlOw0KICB3b3JkLXdyYXA6IG5vcm1hbDsNCiAgYmFja2dyb3VuZC1jb2xvcjogI2ZmZmZmZjsNCn0NCjwvc3R5bGU+DQoNCiMgRXhwbG9yYXRvcnkgRGF0YSBBbmFseXNpcw0KDQpMZXQncyBkbyBhbiBFeHBsb3JhdG9yeSBEYXRhIEFuYWx5c2lzIHVzaW5nIERpYW1vbmQgZGF0YXNldCBhdmFpbGFibGUgaW4gdGhlIHJhZGlhbnQgcGFja2FnZS4NCg0KRGlhbW9uZCBkYXRhc2V0IGNvbnRhaW4gdGhlIHByaWNlcyBhbmQgb3RoZXIgYXR0cmlidXRlcyBvZiBhIHNhbXBsZSBvZiAzMDAwIGRpYW1vbmRzLiANClRoZSBmb2xsb3dpbmcgYW5hbHlzaXMgY2FuIGJlIHZlcnkgaGVscGZ1bCB0byB1bmRlcnN0YW5kIHdoaWNoIGRpYW1vbmQgcHJvcGVydGllcyBkcml2ZSBkaWFtb25kIHByaWNlLg0KDQpvYnMuIFVuZm9ydHVuYXRlbHksIHRoaXMgZGF0YXNldCBkb2VzIG5vdCBjb250YWluIGluZm9ybWF0aW9uIGFib3V0IHRoZSBzaGFwZSBvZiB0aGUgZGlhbW9uZCB0aGF0IHBsYXlzIGFuIGltcG9ydGFudCByb2xlIGluIGl0cyBwcmljZS4NCg0KYGBge3J9DQojIyBsb2FkaW5nIHRoZSBkYXRhLg0KZGYgPC0gcmFkaWFudC5kYXRhOjpkaWFtb25kcw0KYGBgDQoNClRvIHN0YXJ0IGxldCdzIGV4cGxvcmUgdGhlIGRhdGEgc3RydWN0dXJlIGFuZCB2YXJpYWJsZSB0eXBlcyB1c2luZyB0aGUgZnVuY3Rpb24gZ2xpbXBzZSBmcm9tIGRwbHlyOg0KDQpgYGB7cn0NCmdsaW1wc2UoZGYpDQpgYGANCiMjIFZhcmlhYmxlcw0KDQpwcmljZSA9IHByaWNlIGluIFVTIGRvbGxhcnMgKCQzMzgtJDE4LDc5MSkNCmNhcmF0ID0gd2VpZ2h0IG9mIHRoZSBkaWFtb25kICgwLjItMy4wMCkNCmNsYXJpdHkgPSBhIG1lYXN1cmVtZW50IG9mIGhvdyBjbGVhciB0aGUgZGlhbW9uZCBpcyAoSTEgKHdvcnN0KSwgU0kyLCBTSTEsIFZTMiwgVlMxLCBWVlMyLCBWVlMxLCBJRiAoYmVzdCkpDQpjdXQgPSBxdWFsaXR5IG9mIHRoZSBjdXQgKEZhaXIsIEdvb2QsIFZlcnkgR29vZCwgUHJlbWl1bSwgSWRlYWwpDQpjb2xvciA9IGRpYW1vbmQgY29sb3IsIGZyb20gSiAod29yc3QpIHRvIEQgKGJlc3QpDQpkZXB0aCA9IHRvdGFsIGRlcHRoIHBlcmNlbnRhZ2UgPSB6IC8gbWVhbih4LCB5KSA9IDIgKiB6IC8gKHggKyB5KSAoNTQuMi03MC44MCkNCnRhYmxlID0gd2lkdGggb2YgdG9wIG9mIGRpYW1vbmQgcmVsYXRpdmUgdG8gd2lkZXN0IHBvaW50ICg1MC02OSkNCnggPSBsZW5ndGggaW4gbW0gKDMuNzMtOS40MikNCnkgPSB3aWR0aCBpbiBtbSAoMy43MS05LjI5KQ0KeiA9IGRlcHRoIGluIG1tICgyLjMzLTUuNTgpDQpkYXRlID0gc2hpcG1lbnQgZGF0ZQ0KDQpOb3csIHRvIGhhdmUgYSBiZXR0ZXIgdW5kZXJzdGFuZCBhYm91dCB0aGUgZGlhbW9uZCBwcm9wZXJ0aWVzIGFuZCBob3cgdGhleSBhZmZlY3QgcHJpY2UgbGV0J3MgZG8gc29tZSBkaXN0cmlidXRpb24gYW5kIHNjYXR0ZXIgcGxvdHMuDQoNCiMjIFByaWNlDQoNClRoZSBkaXN0cmlidXRpb24gcGxvdCBvZiB0aGUgcHJpY2Ugc2hvd3MgdGhhdCB0aGUgcHJpY2Ugb2YgZGlhbW9uZHMgaXMgaGlnaGx5IHNrd2VlZCB0byB0aGUgcmlnaHQgYW5kIG1vc3Qgb2YgdGhlbSBoYXZlIGEgcHJpY2UgYmVsbG93ICQ1LDAwMC4NCg0KYGBge3IgZmlnLndpZHRoID0gNywgZmlnLmhlaWdodCA9IDcsIGRwaSA9IDE0NH0NCnZpc3VhbGl6ZSgNCiAgZGYsIA0KICB4dmFyID0gInByaWNlIiwNCiAgdHlwZSA9ICJkaXN0IiwgDQogIGN1c3RvbSA9IEZBTFNFDQopDQpgYGANCg0KIyMgNENzDQoNCkFjY29yZGluZ2x5IHRvIEJsdWVOaWxlLCB0aGUgNCBtYWluIHByb3BlcnRpZXMgb2YgYSBkaWFtb25kIGFyZSBDYXJhdCwgQ3V0LCBDb2xvciBhbmQgQ2xhcml0eSAoNENzKToNCi0gVGhlIHRlcm0gY2FyYXQgYWN0dWFsbHkgcmVmZXJzIHRvIHRoZSBkaWFtb25kJ3MgdG90YWwgd2VpZ2h0IGFuZCBub3QgaXRzIHNpemUuDQotIFRoZSBtb3N0IGltcG9ydGFudCBvZiB0aGUgNENzIGlzIGN1dCBiZWNhdXNlIGl0IGhhcyB0aGUgZ3JlYXRlc3QgaW5mbHVlbmNlIG9uIGEgZGlhbW9uZCdzIHNwYXJrbGUuDQotIFRoZSBzZWNvbmQgbW9zdCBpbXBvcnRhbnQgb2YgdGhlIDRDcyBpcyBjb2xvciwgd2hpY2ggcmVmZXJzIHRvIGEgZGlhbW9uZCdzIGxhY2sgb2YgY29sb3IuIFRoZSBsZXNzIGNvbG9yLCB0aGUgaGlnaGVyIHRoZSBncmFkZS4NCi0gQ2xhcml0eSBpcyBvZnRlbiB0aGUgbGVhc3QgaW1wb3J0YW50IG9mIHRoZSA0Q3MgYmVjYXVzZSB0aGUgdGlueSBpbXBlcmZlY3Rpb25zIGFyZSBvZnRlbiBtaWNyb3Njb3BpYy4NCg0KV2UgY2FuIHNlZSBpbiBhbGwgdGhlIHBsb3RzIHRoYXQgdGhlIGRpYW1vbmQgcHJvcGVydGllcyBhcmUgbm90IGV2ZW5seSBkaXN0cmlidXRlZC4gU3BlY2lhbGx5LCB0aGUgY2FyYXQgcGxvdCBpcyBhbHNvIHZlcnkgcmlnaHQgc2t3ZWVkLg0KDQpGcm9tIHRoZSBzZWxsZXJzIHBlcnNwZWN0aXZlIGl0IGlzIGtleSB0byBoYXZlIHRoZSBvcHRpbWFsIHJhbmdlIG9mIGRpYW1vbmRzIHRoYXQgY2xpZW50cyBhcmUgbG9vayBmb3J3YXJkIHRvIGJ1eS4gVGhlcmUgaXMgYSBjbGVhciB0cmFkZS1vZmYgaW4gdGhpcyBkZWNpc2lvbiBiZWNhdXNlIHRoZSBpbnZlbnRvcnkgY29zdCBvZiBhIGRpYW1vbmQgaXMgdmVyeSBleHBlbnNpdmUsIGJ1dCBhdCB0aGUgc2FtZSB0aW1lIHlvdSB3YW50IHRvIG9mZmVyIGFzIG1hbnkgY29tYmluYXRpb25zIGFzIHBvc3NpYmxlIHRvIHRoZSBjb25zdW1lcnMuIFRoYXQgaXMgb25lIHJlYXNvbiB0aGF0IGNvbXBhbmllcyBsaWtlIEJsdWVOaWxlcyBhcmUgZ3Jvd2luZyBmYXN0IHdpdGggZS1jb21tZXJjZS4NCg0KYGBge3IgZmlnLndpZHRoID0gNywgZmlnLmhlaWdodCA9IDcsIGRwaSA9IDE0NH0NCnZpc3VhbGl6ZSgNCiAgZGYsIA0KICB4dmFyID0gYygiY2FyYXQiLCAiY3V0IiwgImNvbG9yIiwgImNsYXJpdHkiKSwgDQogIHR5cGUgPSAiZGlzdCIsIA0KICBjdXN0b20gPSBGQUxTRQ0KKQ0KYGBgDQoNCiMjIyBDYXJhdA0KDQpOb3csIGxldCdzIGNoZWNrIGhvdyBwcmljZSBpcyByZWxhdGVkIHRvIENhcmF0IHdpdGggYSBzY2F0dGVyIHBsb3Q6DQoNCmBgYHtyIGZpZy53aWR0aCA9IDcsIGZpZy5oZWlnaHQgPSA3LCBkcGkgPSAxNDR9DQp2aXN1YWxpemUoDQogIGRpYW1vbmRzLCANCiAgeHZhciA9ICJjYXJhdCIsIA0KICB5dmFyID0gInByaWNlIiwgDQogIHR5cGUgPSAic2NhdHRlciIsIA0KICBucm9icyA9IDEwMDAsIA0KICBjaGVjayA9ICJsaW5lIiwgDQogIGN1c3RvbSA9IEZBTFNFDQopDQpgYGANCg0KVGhlcmUgaXMgYSBjbGVhciBwb3NpdGl2ZSBjb3JyZWxhdGlvbiBiZXR3ZWVuIHByaWNlIGFuZCBjYXJhdC4gSG93ZXZlciwgYmVjYXVzZSB0aGUgcHJpY2UgYW5kIGNhcmF0IGRpc3RyaWJ1dGlvbnMgd2VyZSByaWdodCBza3dlZWQgd2UgY2Fubm90IHByb3Blcmx5IGNhcHR1cmUgYSBsaW5lYXIgcmVsYXRpb25zaGlwLiBUaGVyZWZvcmUsIGxldCdzIGFwcGx5IHRoZSBsb2cgdHJhbnNmb3JtYXRpb24gdG8gYm90aCB2YXJpYWJsZXMgYW5kIGNoZWNrIHRoZSBzY2F0dGVyIHBsb3QgYWdhaW46DQoNCmBgYHtyIGZpZy53aWR0aCA9IDcsIGZpZy5oZWlnaHQgPSA3LCBkcGkgPSAxNDR9DQp2aXN1YWxpemUoDQogIGRpYW1vbmRzLCANCiAgeHZhciA9ICJjYXJhdCIsIA0KICB5dmFyID0gInByaWNlIiwgDQogIHR5cGUgPSAic2NhdHRlciIsIA0KICBucm9icyA9IDEwMDAsIA0KICBjaGVjayA9ICJsaW5lIiwgDQogIGF4ZXMgPSBjKCJsb2dfeCIsICJsb2dfeSIpLCANCiAgY3VzdG9tID0gRkFMU0UNCikNCmBgYA0KDQpZZXMsIGl0IHdvcmtlZCEgTm93IHRoZSBsaW5lYXIgcmVsYXRpb25zaGlwIGlzIG1vcmUgY2xlYXIgYW5kIHRoZSBsb2cgb2YgY2FyYXQgaXMgZ29pbmcgdG8gYmUgYSBzdHJvbmcgcHJlZGljdG9yIG9mIHRoZSBsb2cgb2YgYSBkaWFtb25kIHByaWNlLg0KDQojIyMgQ3V0DQoNCk5vdywgbGV0J3MgY2hlY2sgaG93IGxvZyBwcmljZSBpcyByZWxhdGVkIHRvIEN1dCB3aXRoIGEgYm94LXBsb3Q6DQoNCmBgYHtyIGZpZy53aWR0aCA9IDcsIGZpZy5oZWlnaHQgPSA3LCBkcGkgPSAxNDR9DQp2aXN1YWxpemUoDQogIGRpYW1vbmRzLCANCiAgeHZhciA9ICJjdXQiLCANCiAgeXZhciA9ICJwcmljZSIsIA0KICB0eXBlID0gImJveCIsIA0KICBheGVzID0gImxvZ195IiwgDQogIGN1c3RvbSA9IEZBTFNFDQopDQpgYGANCg0KVGhlIGJveC1wbG90IHNob3dzIHRoYXQgdGhlIGhpZ2hlc3QgYXZlcmFnZSBtZWFuIHByaWNlIGNhbWVzIGZyb20gdGhlIHdvcnN0IHR5cGUgb2YgY3V0LiBUaGF0IGZpbmRpbmcgaXMgb3Bvc2l0ZSB0byBteSBwcmV2aW91cyBleHBlY3RhdGlvbi4gQWNjb3JkaW5nbHkgdG8gQmx1ZU5pbGVzLCBjdXQgd2FzIHN1cHBvc2VkIHRvIGJlIHRoZSBtb3N0IGltcG9ydGFudCBDIHNpbmNlIGl0IGFmZmVjdHMgdGhlIGRpYW1vbmQgc3BhcmtsaW5nLiANCg0KSG93ZXZlciwgaXQgbWlnaHQgYmUgdGhlIGNhc2UgdGhhdCBDYXJhdC9Db2xvci9DbGFyaXR5IHBsYXlzIG1vcmUgaW1wb3J0YW50IHJvbGVzIHRoYW4gY3V0LiBMZXQncyBjaGVjayBhIGJveC1wbG90IHdpdGggbG9nIGNhcmF0IGFuZCBjdXQuDQoNCmBgYHtyIGZpZy53aWR0aCA9IDcsIGZpZy5oZWlnaHQgPSA3LCBkcGkgPSAxNDR9DQp2aXN1YWxpemUoDQogIGRpYW1vbmRzLCANCiAgeHZhciA9ICJjdXQiLCANCiAgeXZhciA9ICJjYXJhdCIsIA0KICB0eXBlID0gImJveCIsIA0KICBheGVzID0gImxvZ195IiwgDQogIGN1c3RvbSA9IEZBTFNFDQopDQpgYGANCg0KSW5kZWVkLCB0aGUgRmFpciBjdXQgaGF2ZSB0aGUgaGlnaGVzdCBtZWFuIG9mIGxvZyBjYXJhdC4gVGhlcmVmb3JlLCBkaWFtb25kcyB3aXRoIGEgbG93ZXIgY3V0IGluIHRoaXMgZGF0YXNldCBtaWdodCBoYXZlIGEgaGlnaGVyIHByaWNlIG5vdCBiZWNhdXNlIG9mIHRoZSBjdXQsIGJ1dCBiZWNhdXNlIG9mIHRoZSBoaWdoZXIgY2FyYXQgc2l6ZS4NCg0KTm93LCBsZXQncyBwZXJmb3JtIGEgQ3Jvc3MtdGFicyBhbmFseXNpcyB3aXRoIHRoZSBjYXRlZ29yaWNhbCB2YXJpYWJsZXMgY29sb3I6DQoNCmBgYHtyIGZpZy53aWR0aCA9IDcsIGZpZy5oZWlnaHQgPSA4LjYyLCBkcGkgPSAxNDR9DQpyZXN1bHQgPC0gY3Jvc3NfdGFicyhkaWFtb25kcywgdmFyMSA9ICJjdXQiLCB2YXIyID0gImNvbG9yIikNCnN1bW1hcnkocmVzdWx0LCBjaGVjayA9IGMoIm9ic2VydmVkIiwgImV4cGVjdGVkIikpDQpwbG90KHJlc3VsdCwgY2hlY2sgPSBjKCJvYnNlcnZlZCIsICJleHBlY3RlZCIpLCBjdXN0b20gPSBGQUxTRSkNCmBgYA0KDQpJbmRlZWQsIHRoZXJlIGlzIGFuIGFzc29jaWF0aW9uIHdpdGggY3V0IGFuZCBjb2xvci4gV2UgY2FuIG5vdGljZSB0aGF0IHRoZXJlIGFyZSBsZXNzIGRpYW1vbmRzIHdpdGggYSBoaWdoZXIgY3V0IGFuZCBoaWdoZXIgY29sb3IgZ3JhZGUgdGhhbiBleHBlY3RlZCAoQ29sb3IgZ3JhZGUgRCBpcyBiZXR0ZXIgdGhhbiBjb2xvciBncmFkZSBKKS4NCg0KRmluYWxseSwgbGV0J3MgcGVyZm9ybSBhIENyb3NzLXRhYnMgYW5hbHlzaXMgd2l0aCB0aGUgY2F0ZWdvcmljYWwgdmFyaWFibGVzIGNsYXJpdHk6DQoNCmBgYHtyIGZpZy53aWR0aCA9IDcsIGZpZy5oZWlnaHQgPSA4LjYyLCBkcGkgPSAxNDR9DQpyZXN1bHQgPC0gY3Jvc3NfdGFicyhkaWFtb25kcywgdmFyMSA9ICJjdXQiLCB2YXIyID0gImNsYXJpdHkiKQ0Kc3VtbWFyeShyZXN1bHQsIGNoZWNrID0gYygib2JzZXJ2ZWQiLCAiZXhwZWN0ZWQiKSkNCnBsb3QocmVzdWx0LCBjaGVjayA9IGMoIm9ic2VydmVkIiwgImV4cGVjdGVkIiksIGN1c3RvbSA9IEZBTFNFKQ0KYGBgDQoNCkluZGVlZCwgdGhlcmUgaXMgYW4gYXNzb2NpYXRpb24gd2l0aCBjdXQgYW5kIGNsYXJpdHkuIFdlIGNhbiBub3RpY2UgdGhhdCB0aGVyZSBhcmUgbGVzcyBkaWFtb25kcyB3aXRoIGEgaGlnaGVyIGN1dCBhbmQgaGlnaGVyIGNsYXJpdHkgZ3JhZGUgdGhhbiBleHBlY3RlZCAoQ2xhcml0eSBJRiBpcyBiZXR0ZXIgdGhhbiBJMSkuDQoNCkhvd2V2ZXIsIHdlIHN0aWxsIGNhbm5vdCBiZSBzdXJlIHRoYXQgY3V0LCBjb2xvciBhbmQgY2xhcml0eSBhcmUgZ29vZCBwcmVkaWN0b3JzIG9mIGxvZyBwcmljZSBsaWtlIGNhcmF0Lg0KDQpMZXQncyBmaWx0ZXIgZm9yIGEgc3BlY2lmaWMgY2FyYXQgcmFuZ2UgbGlrZSBmb3JtIDEgdG8gMS4yNSB0byBmaW5kIG91dCBpZiBjdXQsIGNvbG9yIGFuZCBjbGFyaXR5IGFyZSBnb29kIHByZWRpY3RvcnMgb2YgbG9nIHByaWNlOg0KDQpgYGB7ciBmaWcud2lkdGggPSA3LCBmaWcuaGVpZ2h0ID0gNywgZHBpID0gMTQ0fQ0KdmlzdWFsaXplKA0KICBkaWFtb25kcywgDQogIHh2YXIgPSBjKCJjbGFyaXR5IiwgImN1dCIsICJjb2xvciIpLCANCiAgeXZhciA9ICJwcmljZSIsIA0KICB0eXBlID0gImJhciIsIA0KICBheGVzID0gImxvZ195IiwgDQogIGRhdGFfZmlsdGVyID0gImNhcmF0Pj0xICYgY2FyYXQgPD0gMS4yNSIsIA0KICBjdXN0b20gPSBGQUxTRQ0KKQ0KYGBgDQoNCkluZGVlZCwgbm93IHdlIGNhbiBzZWUgYSBwb3NpdGl2ZSByZWxhdGlvbnNoaXAgYmV0d2VlbiB0aGVzZSB2YXJpYWJsZXMgYW5kIG1lYW4gbG9nIHByaWNlLiBIb3dldmVyLCBpdCBzZWVtcyB0aGF0IGNsYXJpdHkgaXMgdGhlIG1vc3QgaW1wb3J0YW50IG9mIHRoZSBDcyBhbmQgbm90IGN1dCBhcyBwb2ludGVkIG91dCBieSBCbHVlTmlsZXMuDQoNCiMjIyBDb2xvcg0KDQpOb3csIGxldCdzIGV4cGxvcmUgdGhlIGNvbG9yIHByb3BlcnRpZToNCg0KYGBge3IgZmlnLndpZHRoID0gNywgZmlnLmhlaWdodCA9IDcsIGRwaSA9IDE0NH0NCnZpc3VhbGl6ZSgNCiAgZGlhbW9uZHMsIA0KICB4dmFyID0gImNvbG9yIiwgDQogIHl2YXIgPSAicHJpY2UiLCANCiAgdHlwZSA9ICJiYXIiLCANCiAgYXhlcyA9ICJsb2dfeSIsIA0KICBjdXN0b20gPSBGQUxTRQ0KKQ0KYGBgDQoNClNpbWlsYXIgdG8gY3V0LCBjb2xvciBncmFkZSBpcyBzaG93aW5nIGEgbmVnYXRpdmUgcmVsYXRpb25zaGlwIHdpdGggbWVhbiBsb2cgcHJpY2UuDQoNCiMjIyBDbGFyaXR5DQoNCk5vdywgbGV0J3MgZXhwbG9yZSB0aGUgY2xhcml0eSBwcm9wZXJ0aWU6DQoNCmBgYHtyIGZpZy53aWR0aCA9IDcsIGZpZy5oZWlnaHQgPSA3LCBkcGkgPSAxNDR9DQp2aXN1YWxpemUoDQogIGRpYW1vbmRzLCANCiAgeHZhciA9ICJjbGFyaXR5IiwgDQogIHl2YXIgPSAicHJpY2UiLCANCiAgdHlwZSA9ICJiYXIiLCANCiAgYXhlcyA9ICJsb2dfeSIsIA0KICBjdXN0b20gPSBGQUxTRQ0KKQ0KYGBgDQoNClNpbWlsYXIgdG8gY3V0IGFuZCBjb2xvciwgY2xhcml0eSBncmFkZSBpcyBzaG93aW5nIGEgbmVnYXRpdmUgcmVsYXRpb25zaGlwIHdpdGggbWVhbiBsb2cgcHJpY2UuDQoNCiMjIE90aGVycw0KDQpXZSBhbHNvIGhhdmUgYXZhaWxhYmxlIGluZm9ybWF0aW9uIGFib3V0IGRlcHRoLCB0YWJsZSBhbmQgZGlhbW9uZCBkaW1lbnNpb25zLiANCg0KSXQgaXMgcG9zc2libGUgdG8gbm90aWNlIHRoYXQgZGVwdGggYW5kIHRhYmxlIGhhdmUgYSBsb3dlciB2YXJpYXRpb24gYW5kIGxvb2tzIG1vcmUgbGlrZSBhIG5vcm1hbCBkaXN0cmlidXRpb24gaWYgY29tcGFyZWQgdG8gY2FyYXQuDQoNCmBgYHtyIGZpZy53aWR0aCA9IDcsIGZpZy5oZWlnaHQgPSAxMC41LCBkcGkgPSAxNDR9DQp2aXN1YWxpemUoDQogIGRpYW1vbmRzLCANCiAgeHZhciA9IGMoImRlcHRoIiwgInRhYmxlIiwgIngiLCAieSIsICJ6IiksIA0KICB0eXBlID0gImRpc3QiLCANCiAgY3VzdG9tID0gRkFMU0UNCikNCmBgYA0KDQpOb3csIGxldCdzIGNoZWNrIGhvdyB0aGVzZSBwcm9wZXJ0aWVzIGFyZSByZWxhdGVkIHRvIHByaWNlOg0KDQpgYGB7ciBmaWcud2lkdGggPSA3LCBmaWcuaGVpZ2h0ID0gMTAuNSwgZHBpID0gMTQ0fQ0KdmlzdWFsaXplKA0KICBkaWFtb25kcywgDQogIHh2YXIgPSBjKCJkZXB0aCIsICJ0YWJsZSIsICJ4IiwgInkiLCAieiIpLCANCiAgeXZhciA9ICJwcmljZSIsIA0KICB0eXBlID0gInNjYXR0ZXIiLCANCiAgbnJvYnMgPSAxMDAwLCANCiAgY2hlY2sgPSAibGluZSIsIA0KICBheGVzID0gImxvZ195IiwgDQogIGN1c3RvbSA9IEZBTFNFDQopDQpgYGANCg0KSXQgc2VlbXMgdGhhdCBkZXB0aCBhbmQgdGFibGUgYXJlIG5vdCBjb3JyZWxhdGVkIHdpdGggbG9nIHByaWNlLiBPbiB0aGUgb3RoZXIgaGFkLCBhcyBJIHdhcyBleHBlY3RpbmcgeCwgeSBhbmQgeiBoYXZlIGEgcG9zaXRpdmUgY29ycmVsYXRpb24gd2l0aCBsb2cgcHJpY2UuIEl0IG1ha2VzIHNlbnNlIHRoYXQgdGhlIGRpYW1vbmRzIGRpbWVuc2lvbnMgaGF2ZSBpbmZsdWVuY2UgaW4gdGhlIHByaWNlLCBzcGVjaWFsbHkgYmVjYXVzZSB3ZSBkaXNjb3ZlcmVkIHRoYXQgY2FyYXQgKGRpYW1vbmQgd2VpZ2h0KSBwbGF5cyBhbiBpbXBvcnRhbnQgcm9sZSBpbiB0aGUgZGlhbW9uZCBwcmljZS4gSG93ZXZlciwgd2UgbmVlZCB0byBiZSBjYXV0aW9ucyB3aXRoIHRoZXNlIHZhcmlhYmxlcyB3aGVuIGluY2x1ZGluZyB0aGVtIGluIGEgcHJlZGljdGl2ZSBtb2RlbCBvZiBwcmljZSBiZWNhdXNlIHRoZXkgYXJlIGdvaW5nIHRvIGJlIHZlcnkgY29ycmVsYXRlZCB3aXRoIGNhcmF0IGFzIHdlbGwuDQoNClRoYXQgY29uY2x1ZGVzIHRoZSBleHBsb3JhdG9yeSBkYXRhIGFuYWx5c2lzIGFuZCBub3cgaXQgaXMgcG9zc2libGUgdG8gcHJvY2VlZCB0byB0aGUgY29uc3RydWN0aW9uIG9mIGEgcHJlZGljdGl2ZSBtb2RlbCBvZiBsb2cgcHJpY2UgdXNpbmcgTGluZWFyIFJlZ3Jlc3Npb24uDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQo=</div>
 
 
 
