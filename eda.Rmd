@@ -104,7 +104,7 @@ df <- df %>%
 First, let's look at the shipment date of the diamonds to understand how many diamonds per month are shipped:
 
 ```{r}
-df %>%
+timeline<- df %>%
   group_by(year, month) %>%
   summarize(qty=n()) %>%
   ggplot(aes(x=month,y=qty,group=year)) + 
@@ -112,6 +112,7 @@ df %>%
   geom_line(size=0.5) + 
   facet_wrap(~year,nrow=1) + 
   theme(legend.position="none")
+timeline
 ```
 
 From this plot we can notice that there is not continuos shippment of diamonds and the quantities over the years/months vary a lot from.
