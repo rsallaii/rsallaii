@@ -3,7 +3,7 @@
 
 <link rel="stylesheet" href="styles.css" type="text/css">
 
-<img src="images/rsi.jpg" style="width:25%; border:10px solid; margin-right: 20px" align="left">
+<img src="images/rsi.jpg" style="width:25%; border:5px solid; margin-right: 5px" align="left">
 
 I am a curious, results driven and action-oriented leader who has worked internationally on a variety of projects. In my previous positions, I worked as a Consultant for clients coming mainly from the retail, pharmaceutical and transportation industries.
 
