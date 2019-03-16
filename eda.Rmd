@@ -115,7 +115,7 @@ df %>%
 
 ```
 
-From this plot we can notice that there is not continuos shippment of diamonds and the quantities over the years/months vary a lot from.
+From this plot we can notice that there is not continuos shippment of diamonds and the quantities over the years/months vary a lot.
 
 Now, to have a better understand about the diamond properties and how they affect price let's do some distribution and scatter plots.
 
