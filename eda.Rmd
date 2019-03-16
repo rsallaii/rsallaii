@@ -54,7 +54,7 @@ pre, code, pre code {
 
 # Exploratory Data Analysis
 
-Let's do an Exploratory Data Analysis using Diamond dataset available in the radiant package.
+Let's do an Exploratory Data Analysis using the Diamond dataset available in the radiant package.
 
 Diamond dataset contain the prices and other attributes of a sample of 3000 diamonds. 
 The following analysis can be very helpful to understand which diamond properties drive diamond price.
@@ -117,7 +117,7 @@ df %>%
 
 From this plot we can notice that there is not continuos shippment of diamonds and the quantities over the years/months vary a lot.
 
-Now, to have a better understand about the diamond properties and how they affect price let's do some distribution and scatter plots.
+Now, let's create some visualization and statistical analysis to understand how diamond properties affect price.
 
 ## Price
 
@@ -142,7 +142,11 @@ Accordingly to BlueNile, the 4 main properties of a diamond are Carat, Cut, Colo
 
 We can see in all the plots that the diamond properties are not evenly distributed. Specially, the carat plot is also very right skweed.
 
-From the sellers perspective it is key to have the optimal range of diamonds that clients are look forward to buy. There is a clear trade-off in this decision because the inventory cost of a diamond is very expensive, but at the same time you want to offer as many combinations as possible to the consumers. That is one reason that companies like BlueNiles are growing fast with e-commerce.
+From the sellers perspective it is key to have the optimal range of diamonds that clients are looking forward to buy. 
+
+There is a clear trade-off in this decision because the inventory cost of a diamond is very expensive, but at the same time you want to offer as many combinations as possible of the 4Cs to the consumers. 
+
+That is one reason that companies like BlueNiles are growing fast with e-commerce.
 
 ```{r fig.width = 7, fig.height = 5, dpi = 144, out.width = '75%'}
 visualize(
@@ -155,7 +159,7 @@ visualize(
 
 ### Carat
 
-Now, let's check how price is related to Carat with a scatter plot:
+Now, let's check how price is related to carat with a scatter plot:
 
 ```{r fig.width = 7, fig.height = 5, dpi = 144, out.width = '75%'}
 visualize(
@@ -169,7 +173,7 @@ visualize(
 )
 ```
 
-There is a clear positive correlation between price and carat. However, because the price and carat distributions were right skweed we cannot properly capture a linear relationship. Therefore, let's apply the log transformation to both variables and check the scatter plot again:
+There is a clear positive correlation between price and carat. However, because the price and carat distributions are right skweed we might capture a better linear relationship when applying log transformation to these variables.
 
 ```{r fig.width = 7, fig.height = 5, dpi = 144, out.width = '75%'}
 visualize(
@@ -184,11 +188,11 @@ visualize(
 )
 ```
 
-Yes, it worked! Now the linear relationship is more clear and the log of carat is going to be a strong predictor of the log of a diamond price.
+Yes, it worked! Now the linear relationship is more clear and we can expect log carat  to be a strong predictor of the log of a diamond price.
 
 ### Cut
 
-Now, let's check how log price is related to Cut with a box-plot:
+Now, let's check how log price is related to cut with a box-plot:
 
 ```{r fig.width = 7, fig.height = 5, dpi = 144, out.width = '75%'}
 visualize(
@@ -238,9 +242,7 @@ plot(result, check = c("observed", "expected"), custom = FALSE)
 
 Indeed, there is an association with cut and clarity. We can notice that there are less diamonds with a higher cut and higher clarity grade than expected (Clarity IF is better than I1).
 
-However, we still cannot be sure that cut, color and clarity are good predictors of log price like carat.
-
-Let's filter for a specific carat range like form 1 to 1.25 to find out if cut, color and clarity are good predictors of log price:
+However, to check if cut, color and clarity are good predictors of log price like carat let's filter for a specific carat range (e.g. 1 to 1.25) to find out if cut, color and clarity are good predictors of log price:
 
 ```{r fig.width = 7, fig.height = 5, dpi = 144, out.width = '75%'}
 visualize(
@@ -320,27 +322,6 @@ visualize(
 )
 ```
 
-It seems that depth and table are not correlated with log price. On the other had, as I was expecting x, y and z have a positive correlation with log price. It makes sense that the diamonds dimensions have influence in the price, specially because we discovered that carat (diamond weight) plays an important role in the diamond price. However, we need to be cautions with these variables when including them in a predictive model of price because they are going to be very correlated with carat as well.
+It seems that depth and table are not correlated with log price. On the other had, as I was expecting x, y and z have a positive correlation with log price. It makes sense that the diamonds dimensions have influence in the price, specially because we discovered that carat (diamond weight) plays an important role in the diamond price and weight is correalted with volume. However, we need to be cautions with these variables when including them in a predictive model of price because they are going to be very correlated with carat as well.
 
-That concludes the exploratory data analysis and now it is possible to proceed to the construction of a predictive model of log price using Linear Regression.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+That concludes the exploratory data analysis and now it is possible to proceed to the construction of a predictive model of the log price of a diamond using Linear Regression.
