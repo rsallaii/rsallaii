@@ -1,5 +1,5 @@
 ---
-title: Diamonds Exploratory Data Analysis
+title: "Diamonds and the 4Cs"
 output:
   html_document:
     highlight: textmate
@@ -499,7 +499,7 @@ The linear regression model shows that at least for price cut is not the most im
 
 # Buying an engagement ring
 
-```{r , echo=FALSE, out.width = '50%'}
+```{r , echo=FALSE, out.width = '25%'}
 knitr::include_graphics("images/myProposal1.jpg")
 ```
 
@@ -509,6 +509,6 @@ The previous analysis and model can definetely help you with finding the best tr
 
 Just make sure to get some guidance from friends and go on-line to find out more about it. The most important aspect is the surprise that you are going to make and how everything will be set up. Good luck!
 
-```{r , echo=FALSE, out.width = '50%'}
+```{r , echo=FALSE, out.width = '25%'}
 knitr::include_graphics("images/myProposal2.jpg")
 ```
