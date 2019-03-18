@@ -61,7 +61,7 @@ The following analysis can be very helpful to understand which diamond propertie
 
 But, what exactly a diamond is?
 
-[diamonds](images/diamonds.jpg)
+![diamonds](images/diamonds.jpg)
 
 Diamond is a solid form of the element carbon with its atoms arranged in a crystal structure called diamond cubic. Diamonds are very rare and can only be created under conditions of high temperature and pressure over time. This extreme condition create a clear and colourless crystalline form of the pure carbon. Because of that, they acquire such a hardness that they can only be scratched only by other diamonds.
 
@@ -169,7 +169,7 @@ That is one reason that companies like BlueNiles are growing fast with e-commerc
 
 ### Carat
 
-[carat](images/diamond_carat.jpg)
+![carat](images/diamond_carat.jpg)
 
 Now, let's check how price is related to carat with a scatter plot:
 
@@ -231,7 +231,7 @@ Yes, it worked! Now the linear relationship is more clear and we can expect log 
 
 ### Cut
 
-[cut](images/diamond_cut.jpg)
+![cut](images/diamond_cut.jpg)
 
 Now, let's check how log price is related to cut with a box-plot:
 
@@ -301,7 +301,7 @@ Indeed, now we can see a positive relationship between these variables and mean 
 
 ### Color
 
-[color](images/diamond_color.jpg)
+![color](images/diamond_color.jpg)
 
 Now, let's explore the color propertie:
 
@@ -320,7 +320,7 @@ Similar to cut, color grade is showing a negative relationship with mean log pri
 
 ### Clarity
 
-[clarity](images/diamond_Clarity.jpg)
+![clarity](images/diamond_Clarity.jpg)
 
 Now, let's explore the clarity propertie:
 
@@ -486,7 +486,7 @@ The linear regression model shows that at least for price cut is not the most im
 
 # Buying an engagement ring
 
-[MyProposal1](images/myProposal1.jpg)
+![MyProposal1](images/myProposal1.jpg)
 
 If you already decided to propose to your special one the natural next step should be figure out which engagement ring to buy. This decision is both emotional and rational. Basicaly you have two major considerations: your special one expectations and your financial situtation.
 
@@ -494,4 +494,4 @@ The previous analysis and model can definetely help you with finding the best tr
 
 Just make sure to get some guidance from friends and go on-line to find out more about it. The most important aspect is the surprise that you are going to make and how everything will be set up. Good luck!
 
-[MyProposal2](images/myProposal2.jpg)
+![MyProposal2](images/myProposal2.jpg)
