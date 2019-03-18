@@ -3,14 +3,19 @@ output_dir: "."
 navbar:
   title: "Renan Sallai Iwayama"
   left:
-    - text: "EDA"
-      href: eda.html
+    - text: "Diamonds and 4Cs (OLS)"
+      href: diamonds.html
 #    - text: "Linear Regression"
 #      href: ols.html
 #    - text: "Logit Regression"
 #      href: glm.html
 #    - text: "Topic Modeling"
 #      href: tm.html
+#    - text: "Dynamic Decision Making"
+#      href: dcm.html
+
+
+
   right:
     - icon: fa-envelope fa-lg
       href: contact.html
