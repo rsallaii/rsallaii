@@ -59,7 +59,13 @@ Let's do an Exploratory Data Analysis using the Diamond dataset available in the
 Diamond dataset contain the prices and other attributes of a sample of 3000 diamonds. 
 The following analysis can be very helpful to understand which diamond properties drive diamond price.
 
-obs. Unfortunately, this dataset does not contain information about the shape of the diamond that plays an important role in its price.
+But, what exactly a diamond is?
+
+[diamonds](images/diamonds.jpg)
+
+Diamond is a solid form of the element carbon with its atoms arranged in a crystal structure called diamond cubic. Diamonds are very rare and can only be created under conditions of high temperature and pressure over time. This extreme condition create a clear and colourless crystalline form of the pure carbon. Because of that, they acquire such a hardness that they can only be scratched only by other diamonds.
+
+obs. Unfortunately, this dataset does not contain information about the country, brand and shape of the diamond that plays an important role in its price. Let's assume that all diamonds are from the same country, same brand and have the same shape.
 
 ```{r}
 ## loading the data.
@@ -73,7 +79,7 @@ glimpse(df)
 ```
 ## Variables
 
-price = price in US dollars ($338-$18,791)
+price = price in US dollars (`r "$338-$18,791"`)
 
 carat = weight of the diamond (0.2-3.00)
 
@@ -163,6 +169,8 @@ That is one reason that companies like BlueNiles are growing fast with e-commerc
 
 ### Carat
 
+[carat](images/diamond_carat.jpg)
+
 Now, let's check how price is related to carat with a scatter plot:
 
 ```{r fig.width = 7, fig.height = 5, dpi = 144, out.width = '75%'}
@@ -172,12 +180,39 @@ visualize(
   yvar = "price", 
   type = "scatter", 
   nrobs = 1000, 
-  check = "line", 
+  check = c("line", "loess"), 
   custom = FALSE
 )
 ```
 
-There is a clear positive correlation between price and carat. However, because the price and carat distributions are right skweed we might capture a better linear relationship when applying log transformation to these variables.
+There is a clear positive correlation between price and carat.
+
+However, accordingly to BlueNile educational website "diamond prices increase exponentially with carat weight because the larger the carat, the more rare the diamond."
+
+That doesn't seems to be true looking at this plot! 
+
+This is happening because there is no control for other specific characteristics of the dimaonds like Cut, Color and Clarity (e.g. Ideal, D, VS2 / 55 observations).
+
+```{r fig.width = 7, fig.height = 5, dpi = 144, out.width = '75%'}
+visualize(
+  df, 
+  xvar = "carat", 
+  yvar = "price", 
+  type = "scatter", 
+  nrobs = 1000, 
+  check = "loess", 
+  data_filter = "color=='D'&cut=='Ideal'&clarity=='VS2'", 
+  custom = FALSE
+)
+```
+
+The filtered plot above shows that indeed the price grows exponentialy with the increase of carat size for that particular combination of cut, color and clarity (Ideal, D, VS2).
+
+However, to generalize this finding we need to build a linear regression to control for cut, color and clarity.
+
+Anyway, it would be better to find a clear linear relationship between price and carat.
+The loess line for carat seems to have some curvature and the points do not look randomly scattered around that line.
+Usually, a linear relationship can be found when a log transformation is applied to variables with skeweed distributions.
 
 ```{r fig.width = 7, fig.height = 5, dpi = 144, out.width = '75%'}
 visualize(
@@ -196,6 +231,8 @@ Yes, it worked! Now the linear relationship is more clear and we can expect log 
 
 ### Cut
 
+[cut](images/diamond_cut.jpg)
+
 Now, let's check how log price is related to cut with a box-plot:
 
 ```{r fig.width = 7, fig.height = 5, dpi = 144, out.width = '75%'}
@@ -211,7 +248,7 @@ visualize(
 
 The box-plot shows that the highest average mean price cames from the worst type of cut. That finding is oposite to my previous expectation. Accordingly to BlueNiles, cut was supposed to be the most important C since it affects the diamond sparkling. 
 
-However, it might be the case that Carat/Color/Clarity plays more important roles than cut. Let's check a box-plot with log carat and cut.
+Again, this is happening because there is no control for the other diamonds charateristics like Carat/Color/Clarity. Let's check the relationship between cut and carat with another box-plot:
 
 ```{r fig.width = 7, fig.height = 5, dpi = 144, out.width = '75%'}
 visualize(
@@ -226,7 +263,7 @@ visualize(
 
 Indeed, the Fair cut have the highest mean of log carat. Therefore, diamonds with a lower cut in this dataset might have a higher price not because of the cut, but because of the higher carat size.
 
-Now, let's perform a Cross-tabs analysis with the categorical variables color:
+Now, let's perform a Cross-tabs analysis with the categorical variable color:
 
 ```{r fig.width = 7, fig.height = 5, dpi = 144, out.width = '75%'}
 result <- cross_tabs(diamonds, var1 = "cut", var2 = "color")
@@ -236,7 +273,7 @@ plot(result, check = c("observed", "expected"), custom = FALSE)
 
 Indeed, there is an association with cut and color. We can notice that there are less diamonds with a higher cut and higher color grade than expected (Color grade D is better than color grade J).
 
-Finally, let's perform a Cross-tabs analysis with the categorical variables clarity:
+Finally, let's perform a Cross-tabs analysis with the categorical variable clarity:
 
 ```{r fig.width = 7, fig.height = 5, dpi = 144, out.width = '75%'}
 result <- cross_tabs(diamonds, var1 = "cut", var2 = "clarity")
@@ -246,7 +283,7 @@ plot(result, check = c("observed", "expected"), custom = FALSE)
 
 Indeed, there is an association with cut and clarity. We can notice that there are less diamonds with a higher cut and higher clarity grade than expected (Clarity IF is better than I1).
 
-However, to check if cut, color and clarity are good predictors of log price like carat let's filter for a specific carat range (e.g. 1 to 1.25) to find out if cut, color and clarity are good predictors of log price:
+However, to check if cut, color and clarity are good predictors of log price like carat let's filter for a specific carat range (e.g. 1 to 1.25) to find out if cut, color and clarity can be good predictors of log price:
 
 ```{r fig.width = 7, fig.height = 5, dpi = 144, out.width = '75%'}
 visualize(
@@ -263,6 +300,8 @@ visualize(
 Indeed, now we can see a positive relationship between these variables and mean log price. However, it seems that clarity is the most important of the Cs and not cut as pointed out by BlueNiles.
 
 ### Color
+
+[color](images/diamond_color.jpg)
 
 Now, let's explore the color propertie:
 
@@ -281,6 +320,8 @@ Similar to cut, color grade is showing a negative relationship with mean log pri
 
 ### Clarity
 
+[clarity](images/diamond_Clarity.jpg)
+
 Now, let's explore the clarity propertie:
 
 ```{r fig.width = 7, fig.height = 5, dpi = 144, out.width = '75%'}
@@ -296,7 +337,24 @@ visualize(
 
 Similar to cut and color, clarity grade is showing a negative relationship with mean log price.
 
+### 4Cs correlation
+
+Now, let's check the correlation between the price and 4Cs to have a better understand about these variables:
+
+```{r fig.width = 9.96, fig.height = 9.96, dpi = 144, out.width = '75%'}
+result <- correlation(
+  df, 
+  vars = c("price","carat", "cut", "color", "clarity")
+)
+summary(result)
+plot(result, nrobs = -1)
+```
+
+Carat have significat correlations with all the other Cs. The correlation with color is positive while with cut and clarity negative. Cut and Clarity also have a significant positive correlation.
+
 ## Others
+
+[dimensions](images/diamond_anatomy.jpg)
 
 We also have available information about depth, table and diamond dimensions. 
 
@@ -345,3 +403,95 @@ plot(result, nrobs = -1)
 Indeed, the dimensions of a diamond x, y and z are highly correlated with carat and among each other.
 
 That concludes the exploratory data analysis and now it is possible to proceed to the construction of a predictive model of the log price of a diamond using Linear Regression.
+
+# Linear Regression
+
+Let's start the Linear Regression model as simple as possible with just price as the response variable and carat as the explanatory variable.
+
+```{r fig.width = 7, fig.height = 8.08, dpi = 144, out.width = '75%'}
+result <- regress(df, rvar = "price", evar = "carat")
+summary(result, sum_check = "rmse")
+plot(result, plots = "dashboard", nrobs = 1000, custom = FALSE)
+```
+
+`r "The carat coefficient of the linear regression indicates that if you increase the carat size of a diamond by 1 unit the price is expected to increase, on average, $7,744. The Intercepet does not have an interpretation because the price would never be negative. This model also have a high R-squared (.86)"`
+
+However, to draw inferences from this linear regression it is important to check if the linear model assumptions are met with the charts above.
+
+Unfortunately, the residuals are not normally distributed and the residual vs fitted plot shows that we have heteroscedasticity.
+
+As expected before when the scatter plot was created the log-transformation is going to improve our results:
+
+```{r}
+## transform variable
+df <- mutate_ext(diamonds, .vars = vars(price, carat), .funs = log, .ext = "_ln")
+result <- regress(df, rvar = "price_ln", evar = "carat_ln")
+summary(result, sum_check = "rmse")
+plot(result, plots = "dashboard", nrobs = 1000, custom = FALSE)
+```
+
+As expected the log transformation worked! Now, the errors distribution are closer to a normal distribution and the residual vs fitted plot doesn't seem to have heteroscedasticity.
+
+The R-squared also went up to .93.
+
+Now, the interpretation of the coefficient change with the log-log transformation.
+
+For a 1% increase in carats we expect, on average, to see a 1.672% increase in the price of a diamond.
+
+`r "For example, the average price for a carat size of 1 in this dataset would be $5,090 and our prediction would be $4,675."`
+
+However, if we look at the price distribution for carat==1 there is still a lot of variability:
+
+```{r fig.width = 7, fig.height = 7, dpi = 144}
+visualize(
+  df, 
+  xvar = "price", 
+  type = "dist", 
+  data_filter = "carat==1", 
+  custom = FALSE
+)
+```
+
+Let's check if we can do even better by adding the other Cs to the model.
+
+```{r}
+## transform variable
+df <- mutate_ext(diamonds, .vars = vars(price, carat), .funs = log, .ext = "_ln")
+result <- regress(df, rvar = "price_ln", evar = c("carat_ln","cut","color","clarity"))
+summary(result, sum_check = c("rmse", "vif", "confint"))
+plot(result, plots = "dashboard", nrobs = 1000, custom = FALSE)
+```
+
+The model is indeed better! The assumptions of the linear model are still satisfied and the R Squared is .983. Now, that we have added more variables it is important to check the Variance Inflation Factor (VIF), specially because we added variables that are correlated as shown previously in the EDA. However, the VIFs are still acceptable (<4 as a rule fo thumb).
+
+We can make the following interpretations of the coefficients:
+
+For a 1% increase in carats we expect, on average, to see a 1.882% increase in the price of a diamond.
+
+Compared to a diamond of clarity I1 we expect, on average, to pay 100x(exp(1.102)-1) = 201% more for a diamond of clarity IF, keeping all other variables in the model constant.
+
+The coefficients for each of the levels of clarity imply that an increase in clarity will increase the price of diamond. Why then did the box-plot of clarity versus price show price decreasing with clarity? As commented before when we look at the box plot we are really seeing the effect of not only improving clarity on price but also the effect of the other diamond characteristics.
+
+The same applies to color and cut:
+
+Compared to a diamond of fair cut we expect, on average, to pay 100x(exp(0.167)-1) = 18% more for a diamond of ideal cut, keeping all other variables in the model constant.
+
+Compared to a diamond of color D we expect, on average, to pay 100x(exp(-0.489)-1) = 38.7% less for a diamond of clarity J, keeping all other variables in the model constant.
+
+Accordingly to BlueNile cut is the most important of the 4Cs, but it doesn't specify important for what... 
+
+The linear regression model shows that at least for price cut is not the most important of the 4Cs and removing carat that is a numerical variable the categorical variables order of importance could be defined using the percentage variation range on price (clarity > color > cut).
+
+`r "With this final model the predicted the price for a diamond of 1 carat, cut = Ideal, color = E and clarity = VS2 would be $8,710. We just have 1 diamond with these 4Cs characteristics and it has a price of $6,043. Buying this diamond would be a great deal since the expected price is more than $2,000 more."`"
+
+# Buying an engagement ring
+
+[MyProposal1](images/myProposal1.jpg)
+
+If you already decided to propose to your special one the natural next step should be figure out which engagement ring to buy. This decision is both emotional and rational. Basicaly you have two major considerations: your special one expectations and your financial situtation.
+
+The previous analysis and model can definetely help you with finding the best trade-off between price and quality as well evaluate good deals available on the market. It is important to have in mind that your special one will love and appreciate the fact that you spent the effort to find the perfect ring. Most women are not looking to bankrupt you with unrealistic requirements.
+
+Just make sure to get some guidance from friends and go on-line to find out more about it. The most important aspect is the surprise that you are going to make and how everything will be set up. Good luck!
+
+[MyProposal2](images/myProposal2.jpg)
