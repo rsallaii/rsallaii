@@ -61,7 +61,7 @@ The following analysis can be very helpful to understand which diamond propertie
 
 But, what exactly a diamond is?
 
-```{r , echo=FALSE, out.width = '75%'}
+```{r , echo=FALSE, out.width = '50%'}
 knitr::include_graphics("images/diamonds.jpg")
 ```
 
@@ -171,7 +171,7 @@ That is one reason that companies like BlueNiles are growing fast with e-commerc
 
 ### Carat
 
-```{r , echo=FALSE, out.width = '75%'}
+```{r , echo=FALSE, out.width = '50%'}
 knitr::include_graphics("images/diamond_carat.jpg")
 ```
 
@@ -236,13 +236,13 @@ Yes, it worked! Now the linear relationship is more clear and we can expect log 
 
 ### Cut
 
-```{r , echo=FALSE, out.width = '75%'}
+```{r , echo=FALSE, out.width = '50%'}
 knitr::include_graphics("images/diamond_cut.jpg")
 ```
 
 Now, let's check how log price is related to cut with a box-plot:
 
-```{r fig.width = 7, fig.height = 5, dpi = 144, out.width = '75%'}
+```{r fig.width = 7, fig.height = 5, dpi = 144, out.width = '50%'}
 visualize(
   diamonds, 
   xvar = "cut", 
@@ -329,7 +329,7 @@ Similar to cut, color grade is showing a negative relationship with mean log pri
 
 ### Clarity
 
-```{r , echo=FALSE, out.width = '75%'}
+```{r , echo=FALSE, out.width = '50%'}
 knitr::include_graphics("images/diamond_clarity.jpg")
 ```
 
@@ -365,7 +365,9 @@ Carat have significat correlations with all the other Cs. The correlation with c
 
 ## Others
 
-[dimensions](images/diamond_anatomy.jpg)
+```{r , echo=FALSE, out.width = '50%'}
+knitr::include_graphics("images/diamond_anatomy.jpg")
+```
 
 We also have available information about depth, table and diamond dimensions. 
 
@@ -497,7 +499,7 @@ The linear regression model shows that at least for price cut is not the most im
 
 # Buying an engagement ring
 
-```{r , echo=FALSE, out.width = '75%'}
+```{r , echo=FALSE, out.width = '50%'}
 knitr::include_graphics("images/myProposal1.jpg")
 ```
 
@@ -507,6 +509,6 @@ The previous analysis and model can definetely help you with finding the best tr
 
 Just make sure to get some guidance from friends and go on-line to find out more about it. The most important aspect is the surprise that you are going to make and how everything will be set up. Good luck!
 
-```{r , echo=FALSE, out.width = '75%'}
+```{r , echo=FALSE, out.width = '50%'}
 knitr::include_graphics("images/myProposal2.jpg")
 ```
