@@ -394,7 +394,7 @@ That concludes the exploratory data analysis and now it is possible to proceed t
 
 Let's start the Linear Regression model as simple as possible with just price as the response variable and carat as the explanatory variable.
 
-```{r fig.width = 7, fig.height = 8.08, dpi = 144, out.width = '75%'}
+```{r fig.width = 7, fig.height = 8.08, dpi = 144, out.width = '50%'}
 result <- regress(df, rvar = "price", evar = "carat")
 summary(result, sum_check = "rmse")
 plot(result, plots = "dashboard", nrobs = 1000, custom = FALSE)
@@ -408,7 +408,7 @@ Unfortunately, the residuals are not normally distributed and the residual vs fi
 
 As expected before when the scatter plot was created the log-transformation is going to improve our results:
 
-```{r fig.width = 7, fig.height = 8.08, dpi = 144, out.width = '75%'}
+```{r fig.width = 7, fig.height = 8.08, dpi = 144, out.width = '50%'}
 ## transform variable
 df <- mutate_ext(diamonds, .vars = vars(price, carat), .funs = log, .ext = "_ln")
 result <- regress(df, rvar = "price_ln", evar = "carat_ln")
@@ -428,7 +428,7 @@ For a 1% increase in carats we expect, on average, to see a 1.672% increase in t
 
 However, if we look at the price distribution for carat==1 there is still a lot of variability:
 
-```{r fig.width = 7, fig.height = 8.08, dpi = 144, out.width = '75%'}
+```{r fig.width = 7, fig.height = 8.08, dpi = 144, out.width = '50%'}
 visualize(
   df, 
   xvar = "price", 
@@ -440,7 +440,7 @@ visualize(
 
 Let's check if we can do even better by adding the other Cs to the model.
 
-```{r fig.width = 7, fig.height = 8.08, dpi = 144, out.width = '75%'}
+```{r fig.width = 7, fig.height = 8.08, dpi = 144, out.width = '50%'}
 ## transform variable
 df <- mutate_ext(diamonds, .vars = vars(price, carat), .funs = log, .ext = "_ln")
 result <- regress(df, rvar = "price_ln", evar = c("carat_ln","cut","color","clarity"))
@@ -454,7 +454,7 @@ We can make the following interpretations of the coefficients:
 
 For a 1% increase in carats we expect, on average, to see a 1.882% increase in the price of a diamond.
 
-```{r fig.width = 7, fig.height = 8.08, dpi = 144, out.width = '75%'}
+```{r fig.width = 7, fig.height = 8.08, dpi = 144, out.width = '50%'}
 pred <- predict(result, pred_cmd = "carat_ln=c(0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1,1.25,1.5)")
 pred <- pred %>%
   mutate(Prediction=exp(Prediction),carat=exp(carat_ln))
