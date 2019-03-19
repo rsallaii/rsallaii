@@ -376,7 +376,7 @@ It makes sense that the diamonds dimensions have influence in the price, special
 
 However, we need to be cautions with these variables when including them in a predictive model of price because they are going to be very correlated with carat as well.
 
-```{r fig.width = 9.96, fig.height = 9.96, dpi = 144, out.width = '75%'}
+```{r fig.width = 9.96, fig.height = 9.96, dpi = 144, out.width = '50%'}
 result <- correlation(
   df, 
   vars = c("price", "carat", "depth", "table", "x", "y", "z"), 
@@ -428,7 +428,7 @@ For a 1% increase in carats we expect, on average, to see a 1.672% increase in t
 
 However, if we look at the price distribution for carat==1 there is still a lot of variability:
 
-```{r fig.width = 7, fig.height = 8.08, dpi = 144, out.width = '50%'}
+```{r fig.width = 7, fig.height = 8.08, dpi = 144, out.width = '40%'}
 visualize(
   df, 
   xvar = "price", 
@@ -454,7 +454,7 @@ We can make the following interpretations of the coefficients:
 
 For a 1% increase in carats we expect, on average, to see a 1.882% increase in the price of a diamond.
 
-```{r fig.width = 7, fig.height = 8.08, dpi = 144, out.width = '50%'}
+```{r fig.width = 7, fig.height = 8.08, dpi = 144, out.width = '40%'}
 pred <- predict(result, pred_cmd = "carat_ln=c(0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1,1.25,1.5)")
 pred <- pred %>%
   mutate(Prediction=exp(Prediction),carat=exp(carat_ln))
