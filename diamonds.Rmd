@@ -408,7 +408,7 @@ Unfortunately, the residuals are not normally distributed and the residual vs fi
 
 As expected before when the scatter plot was created the log-transformation is going to improve our results:
 
-```{r}
+```{r fig.width = 7, fig.height = 8.08, dpi = 144, out.width = '75%'}
 ## transform variable
 df <- mutate_ext(diamonds, .vars = vars(price, carat), .funs = log, .ext = "_ln")
 result <- regress(df, rvar = "price_ln", evar = "carat_ln")
@@ -428,7 +428,7 @@ For a 1% increase in carats we expect, on average, to see a 1.672% increase in t
 
 However, if we look at the price distribution for carat==1 there is still a lot of variability:
 
-```{r fig.width = 7, fig.height = 7, dpi = 144}
+```{r fig.width = 7, fig.height = 8.08, dpi = 144, out.width = '75%'}
 visualize(
   df, 
   xvar = "price", 
@@ -440,7 +440,7 @@ visualize(
 
 Let's check if we can do even better by adding the other Cs to the model.
 
-```{r}
+```{r fig.width = 7, fig.height = 8.08, dpi = 144, out.width = '75%'}
 ## transform variable
 df <- mutate_ext(diamonds, .vars = vars(price, carat), .funs = log, .ext = "_ln")
 result <- regress(df, rvar = "price_ln", evar = c("carat_ln","cut","color","clarity"))
@@ -454,7 +454,7 @@ We can make the following interpretations of the coefficients:
 
 For a 1% increase in carats we expect, on average, to see a 1.882% increase in the price of a diamond.
 
-```{r}
+```{r fig.width = 7, fig.height = 8.08, dpi = 144, out.width = '75%'}
 pred <- predict(result, pred_cmd = "carat_ln=c(0,.1,.2,.3,.4,.5,.6,.7,.8,.9,1,1.25,1.5)")
 pred <- pred %>%
   mutate(Prediction=exp(Prediction),carat=exp(carat_ln))
@@ -502,3 +502,5 @@ Just make sure to get some guidance from friends and go on-line to find out more
 ```{r , echo=FALSE, out.width = '25%'}
 knitr::include_graphics("images/myProposal2.jpg")
 ```
+
+
